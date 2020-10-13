@@ -1,0 +1,16 @@
+*.pyc
+*.ipynb
+.idea
+.scrapy*
+*.tar.gz
+*.zip
+jobs/
+*.log
+*.csv
+*.json
+*.sql
+*.tab
+outputs
+venv
+2017*
+nohup.out
