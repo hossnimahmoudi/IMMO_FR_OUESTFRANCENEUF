@@ -1,0 +1,585 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector.tests.test_nvector &mdash; nvector 0.4.1.post0.dev36+g00d4643.dirty documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="nvector 0.4.1.post0.dev36+g00d4643.dirty documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.1.post0.dev36+g00d4643.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html">Introduction to Nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">nvector</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>nvector.tests.test_nvector</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nvector.tests.test_nvector</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This file contains solutions to the examples given at</span>
+<span class="sd">www.navlab.net/nvector</span>
+
+<span class="sd">The content of this file is based on the following publication:</span>
+
+<span class="sd">Gade, K. (2010). A Nonsingular Horizontal Position Representation, The Journal</span>
+<span class="sd">of Navigation, Volume 63, Issue 03, pp 395-417, July 2010.</span>
+<span class="sd">(www.navlab.net/Publications/A_Nonsingular_Horizontal_Position_Representation.pdf)</span>
+
+<span class="sd">Copyright (c) 2015, Norwegian Defence Research Establishment (FFI)</span>
+<span class="sd">All rights reserved.</span>
+
+<span class="sd">Originated: 2015.03.26 Kenneth Gade, FFI</span>
+
+<span class="sd">NOTES:</span>
+<span class="sd">- All angles are by default assumed to be in radians, if an angle is</span>
+<span class="sd">in degrees, the variable name has the following ending: _deg</span>
+
+<span class="sd">- The dot product (inner product) of vectors x and y is written dot(x,y)</span>
+<span class="sd">here to make the code more readable for those unfamiliar with</span>
+<span class="sd">Matlab. In Matlab one would normally write x&#39;*y (i.e. x transposed</span>
+<span class="sd">times y)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">unittest</span>
+<span class="kn">from</span> <span class="nn">nvector</span> <span class="k">import</span> <span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">rad</span><span class="p">,</span> <span class="n">lat_lon2n_E</span><span class="p">,</span> <span class="n">n_E2lat_lon</span><span class="p">,</span>
+                     <span class="n">R2xyz</span><span class="p">,</span> <span class="n">xyz2R</span><span class="p">,</span> <span class="n">R2zyx</span><span class="p">,</span> <span class="n">zyx2R</span><span class="p">,</span>
+                     <span class="n">n_EA_E_and_n_EB_E2p_AB_E</span><span class="p">,</span> <span class="n">n_EA_E_and_p_AB_E2n_EB_E</span><span class="p">,</span>
+                     <span class="n">p_EB_E2n_EB_E</span><span class="p">,</span> <span class="n">n_EB_E2p_EB_E</span><span class="p">,</span>
+                     <span class="n">mean_horizontal_position</span><span class="p">,</span>
+                     <span class="n">great_circle_distance</span><span class="p">,</span> <span class="n">euclidean_distance</span><span class="p">,</span>
+                     <span class="n">n_EA_E_distance_and_azimuth2n_EB_E</span><span class="p">,</span>
+                     <span class="n">n_EA_E_and_n_EB_E2azimuth</span><span class="p">,</span>
+                     <span class="n">n_E_and_wa2R_EL</span><span class="p">,</span> <span class="n">n_E2R_EN</span><span class="p">,</span> <span class="n">R_EL2n_E</span><span class="p">,</span> <span class="n">R_EN2n_E</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">numpy.testing</span> <span class="k">import</span> <span class="n">assert_array_almost_equal</span>
+
+
+<div class="viewcode-block" id="TestNvector"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector">[docs]</a><span class="k">class</span> <span class="nc">TestNvector</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex1_A_and_B_to_delta_in_frame_N"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex1_A_and_B_to_delta_in_frame_N">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex1_A_and_B_to_delta_in_frame_N</span><span class="p">():</span>
+
+        <span class="c1"># Positions A and B are given in (decimal) degrees and depths:</span>
+        <span class="n">lat_EA</span><span class="p">,</span> <span class="n">lon_EA</span><span class="p">,</span> <span class="n">z_EA</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span> <span class="mi">3</span>
+        <span class="n">lat_EB</span><span class="p">,</span> <span class="n">lon_EB</span><span class="p">,</span> <span class="n">z_EB</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span> <span class="mi">6</span>
+
+        <span class="c1"># Find the exact vector between the two positions, given in meters</span>
+        <span class="c1"># north, east, and down, i.e. find p_AB_N.</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Step1: Convert to n-vectors (rad() converts to radians):</span>
+        <span class="n">n_EA_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">lat_EA</span><span class="p">,</span> <span class="n">lon_EA</span><span class="p">)</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">lat_EB</span><span class="p">,</span> <span class="n">lon_EB</span><span class="p">)</span>
+
+        <span class="c1"># Step2: Find p_AB_E (delta decomposed in E).</span>
+        <span class="c1"># WGS-84 ellipsoid is default:</span>
+        <span class="n">p_AB_E</span> <span class="o">=</span> <span class="n">n_EA_E_and_n_EB_E2p_AB_E</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">z_EA</span><span class="p">,</span> <span class="n">z_EB</span><span class="p">)</span>
+
+        <span class="c1"># Step3: Find R_EN for position A:</span>
+        <span class="n">R_EN</span> <span class="o">=</span> <span class="n">n_E2R_EN</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">)</span>
+
+        <span class="c1"># Step4: Find p_AB_N</span>
+        <span class="n">p_AB_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_EN</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">p_AB_E</span><span class="p">)</span>
+        <span class="c1"># (Note the transpose of R_EN: The &quot;closest-rule&quot; says that when</span>
+        <span class="c1"># decomposing, the frame in the subscript of the rotation matrix that</span>
+        <span class="c1"># is closest to the vector, should equal the frame where the vector is</span>
+        <span class="c1"># decomposed. Thus the calculation np.dot(R_NE, p_AB_E) is correct,</span>
+        <span class="c1"># since the vector is decomposed in E, and E is closest to the vector.</span>
+        <span class="c1"># In the example we only had R_EN, and thus we must transpose it:</span>
+        <span class="c1"># R_EN&#39;=R_NE)</span>
+
+        <span class="c1"># Step5: Also find the direction (azimuth) to B, relative to north:</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">p_AB_N</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">p_AB_N</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># positive angle about down-axis</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, delta north, east, down = </span><span class="si">{0}</span><span class="s1">, </span><span class="si">{1}</span><span class="s1">, </span><span class="si">{2}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_AB_N</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                                    <span class="n">p_AB_N</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                                    <span class="n">p_AB_N</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex1, azimuth = </span><span class="si">{0}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">p_AB_N</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">331730.23478089</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">p_AB_N</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">332997.87498927</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">p_AB_N</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="mf">17404.27136194</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">azimuth</span><span class="p">),</span> <span class="mf">45.10926324</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex2_B_and_delta_in_frame_B_to_C_in_frame_E</span><span class="p">():</span>
+        <span class="c1"># delta vector from B to C, decomposed in B is given:</span>
+        <span class="n">p_BC_B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="mi">3000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">100</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+        <span class="c1"># Position and orientation of B is given:</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">unit</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">]])</span>  <span class="c1"># unit to get unit length of vector</span>
+        <span class="n">z_EB</span> <span class="o">=</span> <span class="o">-</span><span class="mi">400</span>
+        <span class="n">R_NB</span> <span class="o">=</span> <span class="n">zyx2R</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">20</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">30</span><span class="p">))</span>
+        <span class="c1"># the three angles are yaw, pitch, and roll</span>
+
+        <span class="c1"># A custom reference ellipsoid is given (replacing WGS-84):</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">f</span> <span class="o">=</span> <span class="mi">6378135</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="mf">298.26</span>  <span class="c1"># (WGS-72)</span>
+
+        <span class="c1"># Find the position of C.</span>
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Step1: Find R_EN:</span>
+        <span class="n">R_EN</span> <span class="o">=</span> <span class="n">n_E2R_EN</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">)</span>
+
+        <span class="c1"># Step2: Find R_EB, from R_EN and R_NB:</span>
+        <span class="n">R_EB</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_EN</span><span class="p">,</span> <span class="n">R_NB</span><span class="p">)</span>  <span class="c1"># Note: closest frames cancel</span>
+
+        <span class="c1"># Step3: Decompose the delta vector in E:</span>
+        <span class="n">p_BC_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_EB</span><span class="p">,</span> <span class="n">p_BC_B</span><span class="p">)</span>
+        <span class="c1"># no transpose of R_EB, since the vector is in B</span>
+
+        <span class="c1"># Step4: Find the position of C, using the functions that goes from one</span>
+        <span class="c1"># position and a delta, to a new position:</span>
+        <span class="n">n_EC_E</span><span class="p">,</span> <span class="n">z_EC</span> <span class="o">=</span> <span class="n">n_EA_E_and_p_AB_E2n_EB_E</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">p_BC_E</span><span class="p">,</span> <span class="n">z_EB</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+        <span class="c1"># When displaying the resulting position for humans, it is more</span>
+        <span class="c1"># convenient to see lat, long:</span>
+        <span class="n">lat_EC</span><span class="p">,</span> <span class="n">long_EC</span> <span class="o">=</span> <span class="n">n_E2lat_lon</span><span class="p">(</span><span class="n">n_EC_E</span><span class="p">)</span>
+        <span class="c1"># Here we also assume that the user wants output height (= - depth):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex2, Pos C: lat, long = </span><span class="si">{}</span><span class="s1">,</span><span class="si">{}</span><span class="s1"> deg,  height = </span><span class="si">{}</span><span class="s1"> m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EC</span><span class="p">),</span> <span class="n">deg</span><span class="p">(</span><span class="n">long_EC</span><span class="p">),</span> <span class="o">-</span><span class="n">z_EC</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EC</span><span class="p">),</span> <span class="mf">53.32637826</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">long_EC</span><span class="p">),</span> <span class="mf">63.46812344</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">z_EC</span><span class="p">,</span> <span class="o">-</span><span class="mf">406.00719607</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex3_ECEF_vector_to_geodetic_latitude"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex3_ECEF_vector_to_geodetic_latitude">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex3_ECEF_vector_to_geodetic_latitude</span><span class="p">():</span>
+
+        <span class="c1"># Position B is given as p_EB_E (&quot;ECEF-vector&quot;)</span>
+
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="mi">6371</span><span class="n">e3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="mf">0.9</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">))</span>  <span class="c1"># m</span>
+
+        <span class="c1"># Find position B as geodetic latitude, longitude and height</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Find n-vector from the p-vector:</span>
+        <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">z_EB</span> <span class="o">=</span> <span class="n">p_EB_E2n_EB_E</span><span class="p">(</span><span class="n">p_EB_E</span><span class="p">)</span>
+
+        <span class="c1"># Convert to lat, long and height:</span>
+        <span class="n">lat_EB</span><span class="p">,</span> <span class="n">long_EB</span> <span class="o">=</span> <span class="n">n_E2lat_lon</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">)</span>
+        <span class="n">h_EB</span> <span class="o">=</span> <span class="o">-</span><span class="n">z_EB</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex3, Pos B: lat, long = </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> deg, height = </span><span class="si">{}</span><span class="s1"> m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EB</span><span class="p">),</span> <span class="n">deg</span><span class="p">(</span><span class="n">long_EB</span><span class="p">),</span> <span class="n">h_EB</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EB</span><span class="p">),</span> <span class="mf">39.37874867</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">long_EB</span><span class="p">),</span> <span class="o">-</span><span class="mf">48.0127875</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">h_EB</span><span class="p">,</span> <span class="mf">4702059.83429485</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex4_geodetic_latitude_to_ECEF_vector"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex4_geodetic_latitude_to_ECEF_vector">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex4_geodetic_latitude_to_ECEF_vector</span><span class="p">():</span>
+
+        <span class="c1"># Position B is given with lat, long and height:</span>
+        <span class="n">lat_EB_deg</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">long_EB_deg</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">h_EB</span> <span class="o">=</span> <span class="mi">3</span>
+
+        <span class="c1"># Find the vector p_EB_E (&quot;ECEF-vector&quot;)</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Step1: Convert to n-vector:</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="n">lat_EB_deg</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="n">long_EB_deg</span><span class="p">))</span>
+
+        <span class="c1"># Step2: Find the ECEF-vector p_EB_E:</span>
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="n">n_EB_E2p_EB_E</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="o">-</span><span class="n">h_EB</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex4: p_EB_E = </span><span class="si">{0}</span><span class="s1"> m&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">p_EB_E</span><span class="o">.</span><span class="n">ravel</span><span class="p">()))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">p_EB_E</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                                  <span class="p">[</span><span class="mf">6373290.27721828</span><span class="p">,</span> <span class="mf">222560.20067474</span><span class="p">,</span>
+                                   <span class="mf">110568.82718179</span><span class="p">])</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex5_great_circle_distance"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex5_great_circle_distance">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex5_great_circle_distance</span><span class="p">():</span>
+
+        <span class="c1"># Position A and B are given as n_EA_E and n_EB_E:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">n_EA_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">88</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">89</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="o">-</span><span class="mi">170</span><span class="p">))</span>
+
+        <span class="n">r_Earth</span> <span class="o">=</span> <span class="mi">6371</span><span class="n">e3</span>  <span class="c1"># m, mean Earth radius</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="n">s_AB</span> <span class="o">=</span> <span class="n">great_circle_distance</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r_Earth</span><span class="p">)</span>
+        <span class="n">d_AB</span> <span class="o">=</span> <span class="n">euclidean_distance</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r_Earth</span><span class="p">)</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex5, Great circle distance = </span><span class="si">{}</span><span class="s1"> km, Euclidean distance = </span><span class="si">{}</span><span class="s1"> km&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.45644411</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">d_AB</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">,</span> <span class="mf">332.41872486</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex6_interpolated_position"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex6_interpolated_position">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex6_interpolated_position</span><span class="p">():</span>
+
+        <span class="c1"># Position B at time t0 and t2 is given as n_EB_E_t0 and n_EB_E_t1:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">n_EB_E_t0</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">89</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">n_EB_E_t1</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">89</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">180</span><span class="p">))</span>
+
+        <span class="c1"># The times are given as:</span>
+        <span class="n">t0</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="mi">20</span>
+        <span class="n">ti</span> <span class="o">=</span> <span class="mi">16</span>  <span class="c1"># time of interpolation</span>
+
+        <span class="c1"># Find the interpolated position at time ti, n_EB_E_ti</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Using standard interpolation:</span>
+        <span class="n">n_EB_E_ti</span> <span class="o">=</span> <span class="n">unit</span><span class="p">(</span><span class="n">n_EB_E_t0</span> <span class="o">+</span>
+                         <span class="p">(</span><span class="n">ti</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_EB_E_t1</span> <span class="o">-</span> <span class="n">n_EB_E_t0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">t1</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+
+        <span class="c1"># When displaying the resulting position for humans, it is more</span>
+        <span class="c1"># convenient to see lat, long:</span>
+        <span class="n">lat_EB_ti</span><span class="p">,</span> <span class="n">long_EB_ti</span> <span class="o">=</span> <span class="n">n_E2lat_lon</span><span class="p">(</span><span class="n">n_EB_E_ti</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex6, Interpolated position: lat, long = </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> deg&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EB_ti</span><span class="p">),</span> <span class="n">deg</span><span class="p">(</span><span class="n">long_EB_ti</span><span class="p">)))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EB_ti</span><span class="p">),</span> <span class="mf">89.7999805</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">long_EB_ti</span><span class="p">),</span> <span class="mf">180.</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex7_mean_position"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex7_mean_position">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex7_mean_position</span><span class="p">():</span>
+
+        <span class="c1"># Three positions A, B and C are given:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">n_EA_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">90</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">60</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="n">n_EC_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">))</span>
+
+        <span class="c1"># Find the horizontal mean position:</span>
+        <span class="n">n_EM_E</span> <span class="o">=</span> <span class="n">unit</span><span class="p">(</span><span class="n">n_EA_E</span> <span class="o">+</span> <span class="n">n_EB_E</span> <span class="o">+</span> <span class="n">n_EC_E</span><span class="p">)</span>
+
+        <span class="c1"># The result is best viewed with a figure that shows the n-vectors</span>
+        <span class="c1"># relative to an Earth-model:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex7, See figure&#39;</span><span class="p">)</span>
+        <span class="c1"># plot_Earth_figure(n_EA_E,n_EB_E,n_EC_E,n_EM_E)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">n_EM_E</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                                  <span class="p">[</span><span class="mf">0.384117</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.046602</span><span class="p">,</span> <span class="mf">0.922107</span><span class="p">])</span>
+        <span class="c1"># Alternatively:</span>
+        <span class="n">n_EM_E</span> <span class="o">=</span> <span class="n">mean_horizontal_position</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">n_EC_E</span><span class="p">)))</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">n_EM_E</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
+                                  <span class="p">[</span><span class="mf">0.384117</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.046602</span><span class="p">,</span> <span class="mf">0.922107</span><span class="p">])</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex8_position_A_and_azimuth_and_distance_to_B"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex8_position_A_and_azimuth_and_distance_to_B">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex8_position_A_and_azimuth_and_distance_to_B</span><span class="p">():</span>
+
+        <span class="c1"># Position A is given as n_EA_E:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="mi">80</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="o">-</span><span class="mi">90</span><span class="p">)</span>
+
+        <span class="n">n_EA_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span>
+
+        <span class="c1"># The initial azimuth and great circle distance (s_AB), and Earth</span>
+        <span class="c1"># radius (r_Earth) are also given:</span>
+        <span class="n">azimuth</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+        <span class="n">s_AB</span> <span class="o">=</span> <span class="mi">1000</span>  <span class="c1"># m</span>
+        <span class="n">r_Earth</span> <span class="o">=</span> <span class="mi">6371</span><span class="n">e3</span>  <span class="c1"># m, mean Earth radius</span>
+
+        <span class="c1"># Find the destination point B, as n_EB_E (&quot;The direct/first geodetic</span>
+        <span class="c1"># problem&quot; for a sphere)</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Step1: Convert distance in meter into distance in [rad]:</span>
+        <span class="n">distance_rad</span> <span class="o">=</span> <span class="n">s_AB</span> <span class="o">/</span> <span class="n">r_Earth</span>
+        <span class="c1"># Step2: Find n_EB_E:</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">n_EA_E_distance_and_azimuth2n_EB_E</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">distance_rad</span><span class="p">,</span>
+                                                    <span class="n">azimuth</span><span class="p">)</span>
+
+        <span class="c1"># When displaying the resulting position for humans, it is more</span>
+        <span class="c1"># convenient to see lat, long:</span>
+        <span class="n">lat_EB</span><span class="p">,</span> <span class="n">long_EB</span> <span class="o">=</span> <span class="n">n_E2lat_lon</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ex8, Destination: lat, long = </span><span class="si">{0}</span><span class="s1"> </span><span class="si">{1}</span><span class="s1"> deg&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EB</span><span class="p">),</span>
+                                                                 <span class="n">deg</span><span class="p">(</span><span class="n">long_EB</span><span class="p">)))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EB</span><span class="p">),</span> <span class="mf">79.99154867</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">long_EB</span><span class="p">),</span> <span class="o">-</span><span class="mf">90.01769837</span><span class="p">)</span>
+        <span class="n">azimuth1</span> <span class="o">=</span> <span class="n">n_EA_E_and_n_EB_E2azimuth</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">r_Earth</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">azimuth</span><span class="p">,</span> <span class="n">azimuth1</span><span class="o">+</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex9_intersect"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex9_intersect">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex9_intersect</span><span class="p">():</span>
+
+        <span class="c1"># Two paths A and B are given by two pairs of positions:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">n_EA1_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">20</span><span class="p">))</span>
+        <span class="n">n_EA2_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">40</span><span class="p">))</span>
+        <span class="n">n_EB1_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">60</span><span class="p">))</span>
+        <span class="n">n_EB2_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">70</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">80</span><span class="p">))</span>
+
+        <span class="c1"># Find the intersection between the two paths, n_EC_E:</span>
+        <span class="n">n_EC_E_tmp</span> <span class="o">=</span> <span class="n">unit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">n_EA1_E</span><span class="p">,</span> <span class="n">n_EA2_E</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+                                   <span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">n_EB1_E</span><span class="p">,</span> <span class="n">n_EB2_E</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># n_EC_E_tmp is one of two solutions, the other is -n_EC_E_tmp. Select</span>
+        <span class="c1"># the one that is closet to n_EA1_E, by selecting sign from the dot</span>
+        <span class="c1"># product between n_EC_E_tmp and n_EA1_E:</span>
+        <span class="n">n_EC_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">n_EC_E_tmp</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">n_EA1_E</span><span class="p">))</span> <span class="o">*</span> <span class="n">n_EC_E_tmp</span>
+
+        <span class="c1"># When displaying the resulting position for humans, it is more</span>
+        <span class="c1"># convenient to see lat, long:</span>
+        <span class="n">lat_EC</span><span class="p">,</span> <span class="n">long_EC</span> <span class="o">=</span> <span class="n">n_E2lat_lon</span><span class="p">(</span><span class="n">n_EC_E</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex9, Intersection: lat, long = </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> deg&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EC</span><span class="p">),</span> <span class="n">deg</span><span class="p">(</span><span class="n">long_EC</span><span class="p">)))</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">lat_EC</span><span class="p">),</span> <span class="mf">40.31864307</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">deg</span><span class="p">(</span><span class="n">long_EC</span><span class="p">),</span> <span class="mf">55.90186788</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_Ex10_cross_track_distance"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_Ex10_cross_track_distance">[docs]</a>    <span class="k">def</span> <span class="nf">test_Ex10_cross_track_distance</span><span class="p">():</span>
+
+        <span class="c1"># Position A1 and A2 and B are given as n_EA1_E, n_EA2_E, and n_EB_E:</span>
+        <span class="c1"># Enter elements as lat/long in deg:</span>
+        <span class="n">n_EA1_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">n_EA2_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">10</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">rad</span><span class="p">(</span><span class="mi">1</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="mf">0.1</span><span class="p">))</span>
+
+        <span class="n">r_Earth</span> <span class="o">=</span> <span class="mi">6371</span><span class="n">e3</span>  <span class="c1"># m, mean Earth radius</span>
+
+        <span class="c1"># Find the cross track distance from path A to position B.</span>
+
+        <span class="c1"># SOLUTION:</span>
+        <span class="c1"># Find the unit normal to the great circle:</span>
+        <span class="n">c_E</span> <span class="o">=</span> <span class="n">unit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">n_EA1_E</span><span class="p">,</span> <span class="n">n_EA2_E</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+
+        <span class="c1"># Find the great circle cross track distance:</span>
+        <span class="n">s_xt</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_E</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">))</span> <span class="o">*</span> <span class="n">r_Earth</span>
+
+        <span class="c1"># Find the Euclidean cross track distance:</span>
+        <span class="n">d_xt</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c_E</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">)</span> <span class="o">*</span> <span class="n">r_Earth</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Ex10, Cross track distance = </span><span class="si">{}</span><span class="s1"> m, Euclidean = </span><span class="si">{}</span><span class="s1"> m&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">s_xt</span><span class="p">,</span> <span class="n">d_xt</span><span class="p">))</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">s_xt</span><span class="p">,</span> <span class="mf">11117.79911015</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">d_xt</span><span class="p">,</span> <span class="mf">11117.79346741</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_R2xyz"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_R2xyz">[docs]</a>    <span class="k">def</span> <span class="nf">test_R2xyz</span><span class="p">():</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">rad</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+        <span class="n">R_AB1</span> <span class="o">=</span> <span class="n">xyz2R</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+        <span class="n">R_AB</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.81379768</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.46984631</span><span class="p">,</span>  <span class="mf">0.34202014</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">0.54383814</span><span class="p">,</span>  <span class="mf">0.82317294</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.16317591</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">0.20487413</span><span class="p">,</span>  <span class="mf">0.31879578</span><span class="p">,</span>  <span class="mf">0.92541658</span><span class="p">]]</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">R_AB</span><span class="p">,</span> <span class="n">R_AB1</span><span class="p">)</span>
+        <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span> <span class="o">=</span> <span class="n">R2xyz</span><span class="p">(</span><span class="n">R_AB1</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">))</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_R2zxy"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_R2zxy">[docs]</a>    <span class="k">def</span> <span class="nf">test_R2zxy</span><span class="p">():</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">rad</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+        <span class="n">R_AB1</span> <span class="o">=</span> <span class="n">zyx2R</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">R_AB</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.813798</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.44097</span><span class="p">,</span> <span class="mf">0.378522</span><span class="p">],</span>
+                <span class="p">[</span><span class="mf">0.469846</span><span class="p">,</span> <span class="mf">0.882564</span><span class="p">,</span> <span class="mf">0.018028</span><span class="p">],</span>
+                <span class="p">[</span><span class="o">-</span><span class="mf">0.34202</span><span class="p">,</span> <span class="mf">0.163176</span><span class="p">,</span> <span class="mf">0.925417</span><span class="p">]]</span>
+
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">R_AB</span><span class="p">,</span> <span class="n">R_AB1</span><span class="p">)</span>
+        <span class="n">z1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">R2zyx</span><span class="p">(</span><span class="n">R_AB1</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">))</span></div>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="TestNvector.test_n_E_and_wa2R_EL"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_nvector.TestNvector.test_n_E_and_wa2R_EL">[docs]</a>    <span class="k">def</span> <span class="nf">test_n_E_and_wa2R_EL</span><span class="p">():</span>
+        <span class="n">n_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
+        <span class="n">R_EL</span> <span class="o">=</span> <span class="n">n_E_and_wa2R_EL</span><span class="p">(</span><span class="n">n_E</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">R_EL1</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                 <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">]]</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">R_EL</span><span class="p">,</span> <span class="n">R_EL1</span><span class="p">)</span>
+
+        <span class="n">R_EN</span> <span class="o">=</span> <span class="n">n_E2R_EN</span><span class="p">(</span><span class="n">n_E</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">R_EN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">diag</span><span class="p">([</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="n">n_E1</span> <span class="o">=</span> <span class="n">R_EL2n_E</span><span class="p">(</span><span class="n">R_EN</span><span class="p">)</span>
+        <span class="n">n_E2</span> <span class="o">=</span> <span class="n">R_EN2n_E</span><span class="p">(</span><span class="n">R_EN</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">n_E</span><span class="p">,</span> <span class="n">n_E1</span><span class="p">)</span>
+        <span class="n">assert_array_almost_equal</span><span class="p">(</span><span class="n">n_E</span><span class="p">,</span> <span class="n">n_E2</span><span class="p">)</span></div></div>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># import syssys.argv = [&#39;&#39;, &#39;Test.testName&#39;]</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Norwegian Defence Research Establishment (FFI).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.4.1.post0.dev36+g00d4643.dirty',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,1263 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector.objects &mdash; nvector 0.4.1.post0.dev36+g00d4643.dirty documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="nvector 0.4.1.post0.dev36+g00d4643.dirty documentation" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.1.post0.dev36+g00d4643.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html">Introduction to Nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/modules.html">Module Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">nvector</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      
+    <li>nvector.objects</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nvector.objects</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on 29. des. 2015</span>
+
+<span class="sd">@author: pab</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="k">import</span> <span class="n">deprecate</span>
+<span class="kn">from</span> <span class="nn">numpy.linalg</span> <span class="k">import</span> <span class="n">norm</span>
+<span class="kn">from</span> <span class="nn">geographiclib.geodesic</span> <span class="k">import</span> <span class="n">Geodesic</span> <span class="k">as</span> <span class="n">_Geodesic</span>
+<span class="kn">from</span> <span class="nn">nvector._core</span> <span class="k">import</span> <span class="p">(</span><span class="n">select_ellipsoid</span><span class="p">,</span> <span class="n">rad</span><span class="p">,</span> <span class="n">deg</span><span class="p">,</span> <span class="n">zyx2R</span><span class="p">,</span>
+                           <span class="n">lat_lon2n_E</span><span class="p">,</span> <span class="n">n_E2lat_lon</span><span class="p">,</span> <span class="n">n_E2R_EN</span><span class="p">,</span> <span class="n">n_E_and_wa2R_EL</span><span class="p">,</span>
+                           <span class="n">n_EB_E2p_EB_E</span><span class="p">,</span> <span class="n">p_EB_E2n_EB_E</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span>
+                           <span class="n">closest_point_on_great_circle</span><span class="p">,</span>
+                           <span class="n">great_circle_distance</span><span class="p">,</span> <span class="n">euclidean_distance</span><span class="p">,</span>
+                           <span class="n">cross_track_distance</span><span class="p">,</span> <span class="n">intersect</span><span class="p">,</span>
+                           <span class="n">mean_horizontal_position</span><span class="p">,</span>
+                           <span class="n">E_rotation</span><span class="p">,</span> <span class="n">on_great_circle_path</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">nvector</span> <span class="k">import</span> <span class="n">_examples</span>
+<span class="kn">from</span> <span class="nn">nvector._common</span> <span class="k">import</span> <span class="n">test_docstrings</span><span class="p">,</span> <span class="n">use_docstring_from</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;FrameE&#39;</span><span class="p">,</span> <span class="s1">&#39;FrameB&#39;</span><span class="p">,</span> <span class="s1">&#39;FrameL&#39;</span><span class="p">,</span> <span class="s1">&#39;FrameN&#39;</span><span class="p">,</span> <span class="s1">&#39;GeoPoint&#39;</span><span class="p">,</span> <span class="s1">&#39;GeoPath&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;Nvector&#39;</span><span class="p">,</span> <span class="s1">&#39;ECEFvector&#39;</span><span class="p">,</span> <span class="s1">&#39;Pvector&#39;</span><span class="p">,</span> <span class="s1">&#39;diff_positions&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="GeoPoint"><a class="viewcode-back" href="../../api/generated/nvector.objects.GeoPoint.html#nvector.objects.GeoPoint">[docs]</a><span class="k">class</span> <span class="nc">GeoPoint</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Geographical position given as latitude, longitude, depth in frame E</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    latitude, longitude: real scalars or vectors of length n.</span>
+<span class="sd">        Geodetic latitude and longitude given in [rad or deg]</span>
+<span class="sd">    z: real scalar or vector of length n.</span>
+<span class="sd">        Depth(s) [m]  relative to the ellipsoid (depth = -height)</span>
+<span class="sd">    frame: FrameE object</span>
+<span class="sd">        reference ellipsoid. The default ellipsoid model used is WGS84, but</span>
+<span class="sd">        other ellipsoids/spheres might be specified.</span>
+<span class="sd">    degrees: bool</span>
+<span class="sd">        True if input are given in degrees otherwise radians are assumed.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    Solve geodesic problems.</span>
+
+<span class="sd">    The following illustrates its use</span>
+
+<span class="sd">    &gt;&gt;&gt; import nvector as nv</span>
+<span class="sd">    &gt;&gt;&gt; wgs84 = nv.FrameE(name=&#39;WGS84&#39;)</span>
+
+<span class="sd">    The geodesic inverse problem</span>
+
+<span class="sd">    &gt;&gt;&gt; positionA = wgs84.GeoPoint(-41.32, 174.81, degrees=True)</span>
+<span class="sd">    &gt;&gt;&gt; positionB = wgs84.GeoPoint(40.96, -5.50, degrees=True)</span>
+<span class="sd">    &gt;&gt;&gt; s12, az1, az2 = positionA.distance_and_azimuth(positionB, degrees=True)</span>
+<span class="sd">    &gt;&gt;&gt; &#39;s12 = {:5.2f}, az1 = {:5.2f}, az2 = {:5.2f}&#39;.format(s12, az1, az2)</span>
+<span class="sd">    &#39;s12 = 19959679.27, az1 = 161.07, az2 = 18.83&#39;</span>
+
+<span class="sd">    The geodesic direct problem</span>
+
+<span class="sd">    &gt;&gt;&gt; positionA = wgs84.GeoPoint(40.6, -73.8, degrees=True)</span>
+<span class="sd">    &gt;&gt;&gt; az1, distance = 45, 10000e3</span>
+<span class="sd">    &gt;&gt;&gt; positionB, az2 = positionA.geo_point(distance, az1, degrees=True)</span>
+<span class="sd">    &gt;&gt;&gt; lat2, lon2 = positionB.latitude_deg, positionB.longitude_deg</span>
+<span class="sd">    &gt;&gt;&gt; msg = &#39;lat2 = {:5.2f}, lon2 = {:5.2f}, az2 = {:5.2f}&#39;</span>
+<span class="sd">    &gt;&gt;&gt; msg.format(lat2, lon2, az2)</span>
+<span class="sd">    &#39;lat2 = 32.64, lon2 = 49.01, az2 = 140.37&#39;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GeoPoint.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.GeoPoint.html#nvector.objects.GeoPoint.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="n">latitude</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="n">longitude</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">latitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">longitude</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">_default_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">latitude_deg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">longitude_deg</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">longitude</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_nvector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts latitude and longitude to n-vector.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        latitude, longitude: real scalars or vectors of length n.</span>
+<span class="sd">            Geodetic latitude and longitude given in [rad]</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_E: 3 x n array</span>
+<span class="sd">            n-vector(s) [no unit] decomposed in E.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        n_E2lat_lon.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">n_E</span> <span class="o">=</span> <span class="n">lat_lon2n_E</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Nvector</span><span class="p">(</span><span class="n">n_E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_ecef_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts latitude and longitude to ECEF-vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">to_geo_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return geo-point&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">geo_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return position B computed from current position, distance and azimuth.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        distance: real scalar</span>
+<span class="sd">            ellipsoidal distance [m] between position A and B.</span>
+<span class="sd">        azimuth_a:</span>
+<span class="sd">            azimuth [rad or deg] of line at position A.</span>
+<span class="sd">        degrees: bool</span>
+<span class="sd">            azimuths are given in degrees if True otherwise in radians.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        point_b:  GeoPoint object</span>
+<span class="sd">            latitude and longitude of position B.</span>
+<span class="sd">        azimuth_b</span>
+<span class="sd">            azimuth [rad or deg] of line at position B.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">azimuth</span> <span class="o">=</span> <span class="n">deg</span><span class="p">(</span><span class="n">azimuth</span><span class="p">)</span>
+        <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude_deg</span>
+        <span class="n">latb</span><span class="p">,</span> <span class="n">lonb</span><span class="p">,</span> <span class="n">azimuth_b</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">direct</span><span class="p">(</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span>
+                                             <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="n">long_unroll</span><span class="p">,</span>
+                                             <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">azimuth_b</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="n">azimuth_b</span><span class="p">)</span>
+        <span class="n">point_b</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">latb</span><span class="p">,</span> <span class="n">longitude</span><span class="o">=</span><span class="n">lonb</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
+                                 <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">azimuth_b</span>
+
+    <span class="k">def</span> <span class="nf">distance_and_azimuth</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return ellipsoidal distance between positions as well as the direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point:  GeoPoint object</span>
+<span class="sd">            Latitude and longitude of position B.</span>
+<span class="sd">        degrees: bool</span>
+<span class="sd">            azimuths are returned in degrees if True otherwise in radians.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        s_ab: real scalar</span>
+<span class="sd">            ellipsoidal distance [m] between position A and B.</span>
+<span class="sd">        azimuth_a, azimuth_b</span>
+<span class="sd">            direction [rad or deg] of line at position A and B relative to</span>
+<span class="sd">            North, respectively.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">)</span>
+
+        <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">latitude</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">longitude</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">+</span><span class="n">point</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">point</span><span class="o">.</span><span class="n">z</span><span class="p">):</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Depths differ. Calculating distance at average &#39;</span>
+                          <span class="s1">&#39;depth=</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">z</span><span class="p">)))</span>
+        <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span> <span class="o">=</span> <span class="n">deg</span><span class="p">((</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">z</span><span class="p">,</span>
+                                  <span class="n">long_unroll</span><span class="o">=</span><span class="n">long_unroll</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="n">degrees</span><span class="p">)</span></div>
+
+
+<span class="k">class</span> <span class="nc">_Common</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_equal_to</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="Nvector"><a class="viewcode-back" href="../../api/generated/nvector.objects.Nvector.html#nvector.objects.Nvector">[docs]</a><span class="k">class</span> <span class="nc">Nvector</span><span class="p">(</span><span class="n">_Common</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Geographical position given as n-vector and depth in frame E</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    normal: 3 x n array</span>
+<span class="sd">        n-vector(s) [no unit] decomposed in E.</span>
+<span class="sd">    z: real scalar or vector of length n.</span>
+<span class="sd">        Depth(s) [m]  relative to the ellipsoid (depth = -height)</span>
+<span class="sd">    frame: FrameE object</span>
+<span class="sd">        reference ellipsoid. The default ellipsoid model used is WGS84, but</span>
+<span class="sd">        other ellipsoids/spheres might be specified.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The position of B (typically body) relative to E (typically Earth) is</span>
+<span class="sd">    given into this function as n-vector, n_EB_E and a depth, z relative to the</span>
+<span class="sd">    ellipsiod.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    GeoPoint, ECEFvector, Pvector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Nvector.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.Nvector.html#nvector.objects.Nvector.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">normal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">z</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">_default_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">to_geo_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts n-vector to geo-point.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        n_E2lat_lon, GeoPoint, ECEFvector, Pvector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span> <span class="o">=</span> <span class="n">n_E2lat_lon</span><span class="p">(</span><span class="n">n_E</span><span class="p">,</span> <span class="n">R_Ee</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_ecef_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts n-vector to Cartesian position vector (&quot;ECEF-vector&quot;)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p_EB_E:  ECEFvector object</span>
+<span class="sd">            Cartesian position vector(s) from E to B, decomposed in E.</span>
+
+<span class="sd">        The calculation is excact, taking the ellipsity of the Earth into</span>
+<span class="sd">        account. It is also non-singular as both n-vector and p-vector are</span>
+<span class="sd">        non-singular (except for the center of the Earth).</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        n_EB_E2p_EB_E, ECEFvector, Pvector, GeoPoint</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">R_Ee</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span>
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="n">n_EB_E2p_EB_E</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">R_Ee</span><span class="o">=</span><span class="n">R_Ee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ECEFvector</span><span class="p">(</span><span class="n">p_EB_E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_nvector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span>
+
+    <span class="k">def</span> <span class="nf">unit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">unit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">mean_horizontal_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return horizontal mean position of the n-vectors.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p_EM_E:  3 x 1 array</span>
+<span class="sd">            n-vector [no unit] of the mean position, decomposed in E.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">n_EM_E</span> <span class="o">=</span> <span class="n">mean_horizontal_position</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">n_EM_E</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span>
+                                  <span class="bp">self</span><span class="o">.</span><span class="n">z</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;elementwise multiplication&quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">Nvector</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">*</span><span class="n">scalar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">*</span><span class="n">scalar</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Only scalar multiplication is implemented&#39;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__div__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scalar</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;elementwise division&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">Nvector</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">normal</span><span class="o">/</span><span class="n">scalar</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">z</span><span class="o">/</span><span class="n">scalar</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Only scalar division is implemented&#39;</span><span class="p">)</span>
+
+    <span class="n">__truediv__</span> <span class="o">=</span> <span class="n">__div__</span>
+    <span class="n">__radd__</span> <span class="o">=</span> <span class="n">__add__</span>
+    <span class="n">__rmul__</span> <span class="o">=</span> <span class="n">__mul__</span></div>
+
+
+<span class="k">class</span> <span class="nc">_DiffPos</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Return delta vector from positions A to B.</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    positionA, positionB: Nvector, GeoPoint or ECEFvector objects</span>
+<span class="s2">        position A and B, decomposed in E.</span>
+
+<span class="s2">    Returns</span>
+<span class="s2">    -------</span>
+<span class="s2">    p_AB_E:  ECEFvector</span>
+<span class="s2">        Cartesian position vector(s) from A to B, decomposed in E.</span>
+
+<span class="s2">    Notes</span>
+<span class="s2">    -----</span>
+<span class="s2">    The calculation is excact, taking the ellipsity of the Earth into account.</span>
+<span class="s2">    It is also non-singular as both n-vector and p-vector are non-singular</span>
+<span class="s2">    (except for the center of the Earth).</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+
+<span class="s2">    </span><span class="si">{0}</span><span class="s2"></span>
+
+<span class="s2">    See also</span>
+<span class="s2">    --------</span>
+<span class="s2">    n_EA_E_and_p_AB_E2n_EB_E, p_EB_E2n_EB_E, n_EB_E2p_EB_E.</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_examples</span><span class="o">.</span><span class="n">get_examples</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span>
+
+
+<span class="nd">@use_docstring_from</span><span class="p">(</span><span class="n">_DiffPos</span><span class="p">)</span>
+<div class="viewcode-block" id="diff_positions"><a class="viewcode-back" href="../../api/generated/nvector.objects.diff_positions.html#nvector.objects.diff_positions">[docs]</a><span class="k">def</span> <span class="nf">diff_positions</span><span class="p">(</span><span class="n">positionA</span><span class="p">,</span> <span class="n">positionB</span><span class="p">):</span>
+    <span class="c1"># Function 1. in Section 5.4 in Gade (2010):</span>
+    <span class="n">p_EA_E</span> <span class="o">=</span> <span class="n">positionA</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+    <span class="n">p_EB_E</span> <span class="o">=</span> <span class="n">positionB</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+    <span class="n">p_AB_E</span> <span class="o">=</span> <span class="o">-</span><span class="n">p_EA_E</span> <span class="o">+</span> <span class="n">p_EB_E</span>
+    <span class="k">return</span> <span class="n">p_AB_E</span></div>
+
+
+<div class="viewcode-block" id="Pvector"><a class="viewcode-back" href="../../api/generated/nvector.objects.Pvector.html#nvector.objects.Pvector">[docs]</a><span class="k">class</span> <span class="nc">Pvector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Pvector.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.Pvector.html#nvector.objects.Pvector.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pvector</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pvector</span> <span class="o">=</span> <span class="n">pvector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span></div>
+
+    <span class="k">def</span> <span class="nf">to_ecef_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">frame_B</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+        <span class="n">p_AB_N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">p_AB_E</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">frame_B</span><span class="o">.</span><span class="n">R_EN</span><span class="p">,</span> <span class="n">p_AB_N</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ECEFvector</span><span class="p">(</span><span class="n">p_AB_E</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame_B</span><span class="o">.</span><span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_nvector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">to_geo_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ECEFvector"><a class="viewcode-back" href="../../api/generated/nvector.objects.ECEFvector.html#nvector.objects.ECEFvector">[docs]</a><span class="k">class</span> <span class="nc">ECEFvector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Geographical position given as Cartesian position vector in frame E</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    pvector: 3 x n array</span>
+<span class="s2">        Cartesian position vector(s) [m] from E to B, decomposed in E.</span>
+<span class="s2">    frame: FrameE object</span>
+<span class="s2">        reference ellipsoid. The default ellipsoid model used is WGS84, but</span>
+<span class="s2">        other ellipsoids/spheres might be specified.</span>
+
+<span class="s2">    Notes</span>
+<span class="s2">    -----</span>
+<span class="s2">    The position of B (typically body) relative to E (typically Earth) is</span>
+<span class="s2">    given into this function as p-vector, p_EB_E relative to the center of the</span>
+<span class="s2">    frame.</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+
+<span class="s2">    </span><span class="si">{0}</span><span class="s2"></span>
+
+<span class="s2">    See also</span>
+<span class="s2">    --------</span>
+<span class="s2">    GeoPoint, ECEFvector, Pvector</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_examples</span><span class="o">.</span><span class="n">get_examples</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]))</span>
+
+<div class="viewcode-block" id="ECEFvector.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.ECEFvector.html#nvector.objects.ECEFvector.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pvector</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pvector</span> <span class="o">=</span> <span class="n">pvector</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">_default_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">change_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts to Cartesian position vector in another frame</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        frame: FrameB, FrameN or frameL object</span>
+<span class="sd">            Frame N used to convert p_AB_E (position vector from A to B,</span>
+<span class="sd">            decomposed in E) to p_AB_N.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        p_AB_N:  Pvector object</span>
+<span class="sd">            position vector from A to B, decomposed in frame N.</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        n_EB_E2p_EB_E, n_EA_E_and_p_AB_E2n_EB_E, n_EA_E_and_n_EB_E2p_AB_E.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="o">.</span><span class="n">nvector</span><span class="p">)</span>
+        <span class="n">p_AB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">p_AB_N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">frame</span><span class="o">.</span><span class="n">R_EN</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">p_AB_E</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Pvector</span><span class="p">(</span><span class="n">p_AB_N</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">to_geo_point</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts ECEF-vector to geo-point.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        point: GeoPoint object</span>
+<span class="sd">            containing geodetic latitude and longitude given in [rad or deg]</span>
+<span class="sd">            and depth, z, relative to the ellipsoid (depth = -height).</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        n_E2lat_lon, n_EB_E2p_EB_E,  GeoPoint, Nvector, ECEFvector, Pvector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">to_nvector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts ECEF-vector to n-vector.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        n_EB_E:  Nvector object</span>
+<span class="sd">            n-vector(s) [no unit] of position B, decomposed in E.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        The calculation is excact, taking the ellipsity of the Earth into</span>
+<span class="sd">        account. It is also non-singular as both n-vector and p-vector are</span>
+<span class="sd">        non-singular (except for the center of the Earth).</span>
+
+<span class="sd">        See also</span>
+<span class="sd">        --------</span>
+<span class="sd">        n_EB_E2p_EB_E, Nvector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span>
+        <span class="n">p_EB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pvector</span>
+        <span class="n">R_Ee</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span>
+        <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">depth</span> <span class="o">=</span> <span class="n">p_EB_E2n_EB_E</span><span class="p">(</span><span class="n">p_EB_E</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="n">frame</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">R_Ee</span><span class="o">=</span><span class="n">R_Ee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Nvector</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="n">depth</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ECEFvector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvector</span> <span class="o">+</span> <span class="n">other</span><span class="o">.</span><span class="n">pvector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ECEFvector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pvector</span> <span class="o">-</span> <span class="n">other</span><span class="o">.</span><span class="n">pvector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__neg__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">ECEFvector</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">pvector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GeoPath"><a class="viewcode-back" href="../../api/generated/nvector.objects.GeoPath.html#nvector.objects.GeoPath">[docs]</a><span class="k">class</span> <span class="nc">GeoPath</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Geographical path between two positions in Frame E</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">     positionA, positionB: Nvector, GeoPoint or ECEFvector objects</span>
+<span class="s2">        The path is defined by the line between position A and B, decomposed</span>
+<span class="s2">        in E.</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+
+<span class="s2">    </span><span class="si">{0}</span><span class="s2"></span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_examples</span><span class="o">.</span><span class="n">get_examples</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">]))</span>
+
+<div class="viewcode-block" id="GeoPath.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.GeoPath.html#nvector.objects.GeoPath.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positionA</span><span class="p">,</span> <span class="n">positionB</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positionA</span> <span class="o">=</span> <span class="n">positionA</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positionB</span> <span class="o">=</span> <span class="n">positionB</span></div>
+
+    <span class="k">def</span> <span class="nf">nvectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return positionA and positionB as n-vectors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionA</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionB</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">geo_points</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return positionA and positionB as geo-points</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionA</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionB</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">ecef_vectors</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return positionA and positionB as  ECEF-vectors</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionA</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionB</span><span class="o">.</span><span class="n">to_ecef_vector</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">nvector_normals</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvectors</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">n_EA_E</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="o">.</span><span class="n">normal</span>
+
+    <span class="k">def</span> <span class="nf">_get_average_radius</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># n1 = self.positionA.to_nvector()</span>
+        <span class="c1"># n2 = self.positionB.to_nvector()</span>
+        <span class="c1"># n_EM_E = mean_horizontal_position(np.hstack((n1.normal, n2.normal)))</span>
+        <span class="c1"># p_EM_E = n1.frame.Nvector(n_EM_E).to_ecef_vector()</span>
+        <span class="c1"># radius = norm(p_EM_E.pvector, axis=0)</span>
+        <span class="n">p_E1_E</span><span class="p">,</span> <span class="n">p_E2_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ecef_vectors</span><span class="p">()</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">p_E1_E</span><span class="o">.</span><span class="n">pvector</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span> <span class="o">+</span>
+                  <span class="n">norm</span><span class="p">(</span><span class="n">p_E2_E</span><span class="o">.</span><span class="n">pvector</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="n">radius</span>
+
+    <span class="k">def</span> <span class="nf">cross_track_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;greatcircle&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return cross track distance from path to point.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point: GeoPoint, Nvector or ECEFvector object</span>
+<span class="sd">            position to measure the cross track distance to.</span>
+<span class="sd">        radius: real scalar</span>
+<span class="sd">            radius of sphere in [m]. Default mean Earth radius</span>
+<span class="sd">        method: string</span>
+<span class="sd">            defining distance calculated. Options are:</span>
+<span class="sd">            &#39;greatcircle&#39; or &#39;euclidean&#39;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        distance: real scalar</span>
+<span class="sd">            distance in [m]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_average_radius</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+        <span class="n">n_c</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span><span class="o">.</span><span class="n">normal</span>
+        <span class="k">return</span> <span class="n">cross_track_distance</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">n_c</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">track_distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;greatcircle&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the distance of the path.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        method: string</span>
+<span class="sd">            &#39;greatcircle&#39;:</span>
+<span class="sd">            &#39;euclidean&#39;</span>
+<span class="sd">            &#39;exact&#39;</span>
+<span class="sd">        radius: real scalar</span>
+<span class="sd">            radius of sphere</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;exact&#39;</span><span class="p">:</span>
+            <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_points</span><span class="p">()</span>
+            <span class="n">s_ab</span><span class="p">,</span> <span class="n">_angle</span> <span class="o">=</span> <span class="n">point_a</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">s_ab</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_average_radius</span><span class="p">()</span>
+        <span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">method</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;eu&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">euclidean_distance</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">great_circle_distance</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">n_EB_E</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+
+    <span class="nd">@deprecate</span>
+    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deprecated use intersect instead</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intersect</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">intersect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the intersection(s) between the great circles of the two paths</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        path: GeoPath object</span>
+<span class="sd">            path to intersect</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        point: GeoPoint</span>
+<span class="sd">            point of intersection between paths</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionA</span><span class="o">.</span><span class="n">frame</span>
+        <span class="n">path_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+        <span class="n">path_b</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+        <span class="n">n_EC_E</span> <span class="o">=</span> <span class="n">intersect</span><span class="p">(</span><span class="n">path_a</span><span class="p">,</span> <span class="n">path_b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">n_EC_E</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_on_ellipsoid_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">):</span>
+        <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geo_points</span><span class="p">()</span>
+        <span class="n">distanceAB</span><span class="p">,</span> <span class="n">azimuth_ab</span><span class="p">,</span> <span class="n">_azi_ba</span> <span class="o">=</span> <span class="n">point_a</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">point_b</span><span class="p">)</span>
+        <span class="n">distanceAC</span><span class="p">,</span> <span class="n">azimuth_ac</span><span class="p">,</span> <span class="n">_azi_ca</span> <span class="o">=</span> <span class="n">point_a</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">distanceAB</span> <span class="o">&gt;=</span> <span class="n">distanceAC</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">azimuth_ab</span><span class="p">,</span> <span class="n">azimuth_ac</span><span class="p">,</span>
+                                                        <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">on_great_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">):</span>
+        <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cross_track_distance</span><span class="p">(</span><span class="n">point</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">distance</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_on_great_circle_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_average_radius</span><span class="p">()</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+        <span class="n">point_c</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span><span class="o">.</span><span class="n">normal</span>
+        <span class="k">return</span> <span class="n">on_great_circle_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">point_c</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">)</span>
+<span class="c1">#         pointA, pointB = path</span>
+<span class="c1">#         p_ba = pointB - pointA</span>
+<span class="c1">#         p_ca = point_c - pointA</span>
+<span class="c1">#         is_parallell = np.all(np.isclose(np.cross(p_ba, p_ca, axis=0), 0, rtol, atol), axis=0)</span>
+<span class="c1">#         same_direction = (np.all(np.sign(np.dot(p_ba.T, p_ca)) == 1, axis=0) &amp;</span>
+<span class="c1">#                           np.all(np.sign(p_ba) == np.sign(p_ca), axis=0))</span>
+<span class="c1">#         return is_parallell &amp; same_direction &amp; norm(p_ba, axis=0) &gt;= norm(p_ca, axis=0)</span>
+
+    <span class="k">def</span> <span class="nf">on_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;greatcircle&#39;</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return True if point is on the path between A and B</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point : Nvector, GeoPoint or ECEFvector</span>
+<span class="sd">            point to test</span>
+<span class="sd">        method: string</span>
+<span class="sd">            &#39;greatcircle&#39;:</span>
+<span class="sd">            &#39;exact&#39;</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import nvector as nv</span>
+<span class="sd">        &gt;&gt;&gt; wgs84 = nv.FrameE(name=&#39;WGS84&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; pointA = wgs84.GeoPoint(89, 0, degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; pointB = wgs84.GeoPoint(80, 0, degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; path = nv.GeoPath(pointA, pointB)</span>
+<span class="sd">        &gt;&gt;&gt; pointC = path.interpolate(0.6).to_geo_point()</span>
+<span class="sd">        &gt;&gt;&gt; path.on_path(pointC)</span>
+<span class="sd">        array([ True], dtype=bool)</span>
+
+<span class="sd">        &gt;&gt;&gt; pointD = path.interpolate(1.000000001).to_geo_point()</span>
+<span class="sd">        &gt;&gt;&gt; path.on_path(pointD)</span>
+<span class="sd">        array([False], dtype=bool)</span>
+<span class="sd">        &gt;&gt;&gt; pointE = wgs84.GeoPoint(85, 0.0001, degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; path.on_path(pointE)</span>
+<span class="sd">        array([False], dtype=bool)</span>
+<span class="sd">        &gt;&gt;&gt; pointC = path.interpolate(-2).to_geo_point()</span>
+<span class="sd">        &gt;&gt;&gt; path.on_path(pointC)</span>
+<span class="sd">        array([False], dtype=bool)</span>
+<span class="sd">        &gt;&gt;&gt; path = nv.GeoPath(pointC, pointA)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;exact&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_ellipsoid_path</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_great_circle_path</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">closest_point_on_great_circle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="n">nvector</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">closest_point_on_great_circle</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">nvector</span><span class="o">.</span><span class="n">normal</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">Nvector</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">nvector</span><span class="o">.</span><span class="n">z</span><span class="p">)</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">closest_point_on_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns closest point on great circle path segment to the point.</span>
+
+<span class="sd">        If the point is within the extent of the segment, the point returned is</span>
+<span class="sd">        on the segment path otherwise, it is the closest endpoint defining the</span>
+<span class="sd">        path segment.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        point: GeoPoint</span>
+<span class="sd">            point of intersection between paths</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        closest_point: GeoPoint</span>
+<span class="sd">            closest point on path segment.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import nvector as nv</span>
+<span class="sd">        &gt;&gt;&gt; wgs84 = nv.FrameE(name=&#39;WGS84&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; pointA = wgs84.GeoPoint(51., 1., degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; pointB = wgs84.GeoPoint(51., 2., degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; pointC = wgs84.GeoPoint(51., 1.9, degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; path = nv.GeoPath(pointA, pointB)</span>
+<span class="sd">        &gt;&gt;&gt; point = path.closest_point_on_path(pointC)</span>
+<span class="sd">        &gt;&gt;&gt; np.allclose((point.latitude_deg, point.longitude_deg),</span>
+<span class="sd">        ...             ([51.00038411380564], [1.900003311624411]))</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; np.allclose(GeoPath(pointC, point).track_distance(),  42.67368351)</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt; pointD = wgs84.GeoPoint(51.0, 2.1, degrees=True)</span>
+<span class="sd">        &gt;&gt;&gt; pointE = path.closest_point_on_path(pointD) # 51.0000, 002.0000</span>
+<span class="sd">        &gt;&gt;&gt; pointE.latitude_deg, pointE.longitude_deg</span>
+<span class="sd">        (51.0, 2.0)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">point_c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">closest_point_on_great_circle</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_path</span><span class="p">(</span><span class="n">point_c</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">point_c</span>
+        <span class="n">n0</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector_normals</span><span class="p">()</span>
+        <span class="n">radius</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_average_radius</span><span class="p">()</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="n">great_circle_distance</span><span class="p">(</span><span class="n">n1</span><span class="p">,</span> <span class="n">n0</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="n">d2</span> <span class="o">=</span> <span class="n">great_circle_distance</span><span class="p">(</span><span class="n">n2</span><span class="p">,</span> <span class="n">n0</span><span class="p">,</span> <span class="n">radius</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d1</span> <span class="o">&lt;</span> <span class="n">d2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionA</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">positionB</span><span class="o">.</span><span class="n">to_geo_point</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ti</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the interpolated point along the path</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ti: real scalar</span>
+<span class="sd">            interpolation time assuming position A and B is at t0=0 and t1=1,</span>
+<span class="sd">            respectively.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        point: Nvector</span>
+<span class="sd">            point of interpolation along path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvectors</span><span class="p">()</span>
+        <span class="n">point_c</span> <span class="o">=</span> <span class="n">point_a</span> <span class="o">+</span> <span class="n">ti</span> <span class="o">*</span> <span class="p">(</span><span class="n">point_b</span><span class="o">-</span><span class="n">point_a</span><span class="p">)</span>
+        <span class="n">point_c</span><span class="o">.</span><span class="n">normal</span> <span class="o">=</span> <span class="n">unit</span><span class="p">(</span><span class="n">point_c</span><span class="o">.</span><span class="n">normal</span><span class="p">,</span> <span class="n">norm_zero_vector</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">point_c</span></div>
+
+
+<div class="viewcode-block" id="FrameE"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameE.html#nvector.objects.FrameE">[docs]</a><span class="k">class</span> <span class="nc">FrameE</span><span class="p">(</span><span class="n">_Common</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Earth-fixed frame</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a: real scalar, default WGS-84 ellipsoid.</span>
+<span class="sd">        Semi-major axis of the Earth ellipsoid given in [m].</span>
+<span class="sd">    f: real scalar, default WGS-84 ellipsoid.</span>
+<span class="sd">        Flattening [no unit] of the Earth ellipsoid. If f==0 then spherical</span>
+<span class="sd">        Earth with radius a is used in stead of WGS-84.</span>
+<span class="sd">    name: string</span>
+<span class="sd">        defining the default ellipsoid.</span>
+<span class="sd">    axes: &#39;e&#39; or &#39;E&#39;</span>
+<span class="sd">        defines axes orientation of E frame. Default is axes=&#39;e&#39; which means</span>
+<span class="sd">        that the orientation of the axis is such that:</span>
+<span class="sd">        z-axis -&gt; North Pole, x-axis -&gt; Latitude=Longitude=0.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The frame is Earth-fixed (rotates and moves with the Earth) where the</span>
+<span class="sd">    origin coincides with Earth&#39;s centre (geometrical centre of ellipsoid</span>
+<span class="sd">    model).</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    FrameN, FrameL, FrameB</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FrameE.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameE.html#nvector.objects.FrameE.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">,</span> <span class="n">axes</span><span class="o">=</span><span class="s1">&#39;e&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">_full_name</span> <span class="o">=</span> <span class="n">select_ellipsoid</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">a</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R_Ee</span> <span class="o">=</span> <span class="n">E_rotation</span><span class="p">(</span><span class="n">axes</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">a</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">f</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R_Ee</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">R_Ee</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return ellipsoidal distance between positions as well as the direction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lat_a, lon_a:  real scalars</span>
+<span class="sd">            Latitude and longitude of position a.</span>
+<span class="sd">        lat_b, lon_b:  real scalars</span>
+<span class="sd">            Latitude and longitude of position b.</span>
+<span class="sd">        z : real scalar</span>
+<span class="sd">            depth relative to Earth ellipsoid.</span>
+<span class="sd">        degrees: bool</span>
+<span class="sd">            angles are given in degrees if True otherwise in radians.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        s_ab: real scalar</span>
+<span class="sd">            ellipsoidal distance [m] between position A and B.</span>
+<span class="sd">        azimuth_a, azimuth_b</span>
+<span class="sd">            direction [rad or deg] of line at position A and B relative to</span>
+<span class="sd">            North, respectively.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        C. F. F. Karney, Algorithms for geodesics, J. Geodesy 87(1), 43-55</span>
+
+<span class="sd">        `geographiclib &lt;https://pypi.python.org/pypi/geographiclib&gt;`_</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">outmask</span> <span class="o">=</span> <span class="n">_Geodesic</span><span class="o">.</span><span class="n">STANDARD</span>
+        <span class="k">if</span> <span class="n">long_unroll</span><span class="p">:</span>
+            <span class="n">outmask</span> <span class="o">=</span> <span class="n">_Geodesic</span><span class="o">.</span><span class="n">STANDARD</span> <span class="o">|</span> <span class="n">_Geodesic</span><span class="o">.</span><span class="n">LONG_UNROLL</span>
+
+        <span class="n">geo</span> <span class="o">=</span> <span class="n">_Geodesic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">-</span><span class="n">z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span> <span class="o">=</span> <span class="n">deg</span><span class="p">((</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">Inverse</span><span class="p">(</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">outmask</span><span class="o">=</span><span class="n">outmask</span><span class="p">)</span>
+        <span class="n">azimuth_a</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;azi1&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">degrees</span> <span class="k">else</span> <span class="n">rad</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;azi1&#39;</span><span class="p">])</span>
+        <span class="n">azimuth_b</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;azi2&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">degrees</span> <span class="k">else</span> <span class="n">rad</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="s1">&#39;azi2&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;s12&#39;</span><span class="p">],</span> <span class="n">azimuth_a</span><span class="p">,</span> <span class="n">azimuth_b</span>
+
+    <span class="k">def</span> <span class="nf">direct</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+               <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return position B computed from position A, distance and azimuth.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        lat_a, lon_a:  real scalars</span>
+<span class="sd">            Latitude and longitude [rad or deg] of position a.</span>
+<span class="sd">        azimuth_a:</span>
+<span class="sd">            azimuth [rad or deg] of line at position A.</span>
+<span class="sd">        distance: real scalar</span>
+<span class="sd">            ellipsoidal distance [m] between position A and B.</span>
+<span class="sd">        z : real scalar</span>
+<span class="sd">            depth relative to Earth ellipsoid.</span>
+<span class="sd">        degrees: bool</span>
+<span class="sd">            angles are given in degrees if True otherwise in radians.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        lat_b, lon_b:  real scalars</span>
+<span class="sd">            Latitude and longitude of position b.</span>
+<span class="sd">        azimuth_b</span>
+<span class="sd">            azimuth [rad or deg] of line at position B.</span>
+
+<span class="sd">        References</span>
+<span class="sd">        ----------</span>
+<span class="sd">        C. F. F. Karney, Algorithms for geodesics, J. Geodesy 87(1), 43-55</span>
+
+<span class="sd">        `geographiclib &lt;https://pypi.python.org/pypi/geographiclib&gt;`_</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">geo</span> <span class="o">=</span> <span class="n">_Geodesic</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="o">-</span><span class="n">z</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span><span class="p">)</span>
+        <span class="n">outmask</span> <span class="o">=</span> <span class="n">_Geodesic</span><span class="o">.</span><span class="n">STANDARD</span>
+        <span class="k">if</span> <span class="n">long_unroll</span><span class="p">:</span>
+            <span class="n">outmask</span> <span class="o">=</span> <span class="n">_Geodesic</span><span class="o">.</span><span class="n">STANDARD</span> <span class="o">|</span> <span class="n">_Geodesic</span><span class="o">.</span><span class="n">LONG_UNROLL</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">azimuth</span> <span class="o">=</span> <span class="n">deg</span><span class="p">((</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">))</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">geo</span><span class="o">.</span><span class="n">Direct</span><span class="p">(</span><span class="n">lat_a</span><span class="p">,</span> <span class="n">lon_a</span><span class="p">,</span> <span class="n">azimuth</span><span class="p">,</span> <span class="n">distance</span><span class="p">,</span> <span class="n">outmask</span><span class="o">=</span><span class="n">outmask</span><span class="p">)</span>
+        <span class="n">latb</span><span class="p">,</span> <span class="n">lonb</span><span class="p">,</span> <span class="n">azimuth_b</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;lat2&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;lon2&#39;</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;azi2&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">rad</span><span class="p">(</span><span class="n">latb</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="n">lonb</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="n">azimuth_b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">latb</span><span class="p">,</span> <span class="n">lonb</span><span class="p">,</span> <span class="n">azimuth_b</span>
+
+    <span class="nd">@use_docstring_from</span><span class="p">(</span><span class="n">GeoPoint</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">GeoPoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frame&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+    <span class="nd">@use_docstring_from</span><span class="p">(</span><span class="n">Nvector</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">Nvector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frame&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Nvector</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span>
+
+    <span class="nd">@use_docstring_from</span><span class="p">(</span><span class="n">ECEFvector</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">ECEFvector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">):</span>
+        <span class="n">kwds</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;frame&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ECEFvector</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwds</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FrameN"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameN.html#nvector.objects.FrameN">[docs]</a><span class="k">class</span> <span class="nc">FrameN</span><span class="p">(</span><span class="n">_Common</span><span class="p">):</span>
+    <span class="n">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    North-East-Down frame</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    position: ECEFvector, GeoPoint or Nvector object</span>
+<span class="s2">        position of the vehicle (B) which also defines the origin of the local</span>
+<span class="s2">        frame N. The origin is directly beneath or above the vehicle (B), at</span>
+<span class="s2">        Earth&#39;s surface (surface of ellipsoid model).</span>
+
+<span class="s2">    Notes</span>
+<span class="s2">    -----</span>
+<span class="s2">    The Cartesian frame is local and oriented North-East-Down, i.e.,</span>
+<span class="s2">    the x-axis points towards north, the y-axis points towards east (both are</span>
+<span class="s2">    horizontal), and the z-axis is pointing down.</span>
+
+<span class="s2">    When moving relative to the Earth, the frame rotates about its z-axis</span>
+<span class="s2">    to allow the x-axis to always point towards north. When getting close</span>
+<span class="s2">    to the poles this rotation rate will increase, being infinite at the</span>
+<span class="s2">    poles. The poles are thus singularities and the direction of the</span>
+<span class="s2">    x- and y-axes are not defined here. Hence, this coordinate frame is</span>
+<span class="s2">    NOT SUITABLE for general calculations.</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+
+<span class="s2">    </span><span class="si">{0}</span><span class="s2"></span>
+
+<span class="s2">    See also</span>
+<span class="s2">    --------</span>
+<span class="s2">    FrameE, FrameL, FrameB</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_examples</span><span class="o">.</span><span class="n">get_examples</span><span class="p">([</span><span class="mi">1</span><span class="p">]))</span>
+
+<div class="viewcode-block" id="FrameN.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameN.html#nvector.objects.FrameN.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">):</span>
+        <span class="n">nvector</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">n_EA_E</span> <span class="o">=</span> <span class="n">nvector</span><span class="o">.</span><span class="n">normal</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span> <span class="o">=</span> <span class="n">Nvector</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R_EN</span> <span class="o">=</span> <span class="n">n_E2R_EN</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R_EN</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">R_EN</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">nvector</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">Pvector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pvector</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Pvector</span><span class="p">(</span><span class="n">pvector</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FrameL"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameL.html#nvector.objects.FrameL">[docs]</a><span class="k">class</span> <span class="nc">FrameL</span><span class="p">(</span><span class="n">FrameN</span><span class="p">):</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Local level, Wander azimuth frame</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    position: ECEFvector, GeoPoint or Nvector object</span>
+<span class="sd">        position of the vehicle (B) which also defines the origin of the local</span>
+<span class="sd">        frame L. The origin is directly beneath or above the vehicle (B), at</span>
+<span class="sd">        Earth&#39;s surface (surface of ellipsoid model).</span>
+<span class="sd">    wander_azimuth: real scalar</span>
+<span class="sd">        Angle between the x-axis of L and the north direction.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The Cartesian frame is local and oriented Wander-azimuth-Down. This means</span>
+<span class="sd">    that the z-axis is pointing down. Initially, the x-axis points towards</span>
+<span class="sd">    north, and the y-axis points towards east, but as the vehicle moves they</span>
+<span class="sd">    are not rotating about the z-axis (their angular velocity relative to the</span>
+<span class="sd">    Earth has zero component along the z-axis).</span>
+
+<span class="sd">    (Note: Any initial horizontal direction of the x- and y-axes is valid</span>
+<span class="sd">    for L, but if the initial position is outside the poles, north and east</span>
+<span class="sd">    are usually chosen for convenience.)</span>
+
+<span class="sd">    The L-frame is equal to the N-frame except for the rotation about the</span>
+<span class="sd">    z-axis, which is always zero for this frame (relative to E). Hence, at</span>
+<span class="sd">    a given time, the only difference between the frames is an angle</span>
+<span class="sd">    between the x-axis of L and the north direction; this angle is called</span>
+<span class="sd">    the wander azimuth angle. The L-frame is well suited for general</span>
+<span class="sd">    calculations, as it is non-singular.</span>
+
+<span class="sd">    See also</span>
+<span class="sd">    --------</span>
+<span class="sd">    FrameE, FrameN, FrameB</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="FrameL.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameL.html#nvector.objects.FrameL.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">nvector</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="n">n_EA_E</span> <span class="o">=</span> <span class="n">nvector</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">R_Ee</span> <span class="o">=</span> <span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span> <span class="o">=</span> <span class="n">Nvector</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R_EN</span> <span class="o">=</span> <span class="n">n_E_and_wa2R_EL</span><span class="p">(</span><span class="n">n_EA_E</span><span class="p">,</span> <span class="n">wander_azimuth</span><span class="p">,</span> <span class="n">R_Ee</span><span class="o">=</span><span class="n">R_Ee</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="FrameB"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameB.html#nvector.objects.FrameB">[docs]</a><span class="k">class</span> <span class="nc">FrameB</span><span class="p">(</span><span class="n">FrameN</span><span class="p">):</span>
+    <span class="n">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    Body frame</span>
+
+<span class="s2">    Parameters</span>
+<span class="s2">    ----------</span>
+<span class="s2">    position: ECEFvector, GeoPoint or Nvector object</span>
+<span class="s2">        position of the vehicle&#39;s reference point which also coincides with</span>
+<span class="s2">        the origin of the frame B.</span>
+<span class="s2">    yaw, pitch, roll: real scalars</span>
+<span class="s2">        defining the orientation of frame B in [deg] or [rad].</span>
+<span class="s2">    degrees : bool</span>
+<span class="s2">        if True yaw, pitch, roll are given in degrees otherwise in radians</span>
+
+<span class="s2">    Notes</span>
+<span class="s2">    -----</span>
+<span class="s2">    The frame is fixed to the vehicle where the x-axis points forward, the</span>
+<span class="s2">    y-axis to the right (starboard) and the z-axis in the vehicle&#39;s down</span>
+<span class="s2">    direction.</span>
+
+<span class="s2">    Examples</span>
+<span class="s2">    --------</span>
+
+<span class="s2">    </span><span class="si">{0}</span><span class="s2"></span>
+
+<span class="s2">    See also</span>
+<span class="s2">    --------</span>
+<span class="s2">    FrameE, FrameL, FrameN</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">_examples</span><span class="o">.</span><span class="n">get_examples</span><span class="p">([</span><span class="mi">2</span><span class="p">]))</span>
+
+<div class="viewcode-block" id="FrameB.__init__"><a class="viewcode-back" href="../../api/generated/nvector.objects.FrameB.html#nvector.objects.FrameB.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">yaw</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">roll</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">nvector</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">to_nvector</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span> <span class="o">=</span> <span class="n">nvector</span>
+        <span class="k">if</span> <span class="n">degrees</span><span class="p">:</span>
+            <span class="n">yaw</span><span class="p">,</span> <span class="n">pitch</span><span class="p">,</span> <span class="n">roll</span> <span class="o">=</span> <span class="n">rad</span><span class="p">(</span><span class="n">yaw</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="n">pitch</span><span class="p">),</span> <span class="n">rad</span><span class="p">(</span><span class="n">roll</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaw</span> <span class="o">=</span> <span class="n">yaw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span> <span class="o">=</span> <span class="n">pitch</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">roll</span> <span class="o">=</span> <span class="n">roll</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">R_EN</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">R_NB</span> <span class="o">=</span> <span class="n">zyx2R</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pitch</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">roll</span><span class="p">)</span>
+        <span class="n">n_EB_E</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span><span class="o">.</span><span class="n">normal</span>
+        <span class="n">R_EN</span> <span class="o">=</span> <span class="n">n_E2R_EN</span><span class="p">(</span><span class="n">n_EB_E</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">R_Ee</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">R_EN</span><span class="p">,</span> <span class="n">R_NB</span><span class="p">)</span>  <span class="c1"># rotation matrix</span>
+
+    <span class="k">def</span> <span class="nf">_is_equal_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaw</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">yaw</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pitch</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">pitch</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">roll</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">roll</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">R_EN</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">R_EN</span><span class="p">)</span> <span class="ow">and</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nvector</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">nvector</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_check_frames</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">frame</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">frame</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Frames are unequal&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_default_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">FrameE</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">frame</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">test_docstrings</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Norwegian Defence Research Establishment (FFI).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.4.1.post0.dev36+g00d4643.dirty',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

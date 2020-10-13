@@ -1,0 +1,542 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector.tests.test_geodesic &mdash; nvector 0.4.1.post0.dev36+g00d4643.dirty documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="nvector 0.4.1.post0.dev36+g00d4643.dirty documentation" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.1.post0.dev36+g00d4643.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html">Introduction to Nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changes.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../../index.html">nvector</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+      
+    <li>nvector.tests.test_geodesic</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nvector.tests.test_geodesic</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">nvector</span> <span class="k">import</span> <span class="n">GeoPoint</span><span class="p">,</span> <span class="n">FrameE</span>
+
+<span class="n">wgs84</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;WGS84&#39;</span><span class="p">)</span>
+
+
+<span class="n">TESTCASES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="mf">35.60777</span><span class="p">,</span> <span class="o">-</span><span class="mf">139.44815</span><span class="p">,</span> <span class="mf">111.098748429560326</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">11.17491</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.95921</span><span class="p">,</span> <span class="mf">129.289270889708762</span><span class="p">,</span>
+     <span class="mf">8935244.5604818305</span><span class="p">,</span> <span class="mf">80.50729714281974</span><span class="p">,</span> <span class="mf">6273170.2055303837</span><span class="p">,</span>
+     <span class="mf">0.16606318447386067</span><span class="p">,</span> <span class="mf">0.16479116945612937</span><span class="p">,</span> <span class="mf">12841384694976.432</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">55.52454</span><span class="p">,</span> <span class="mf">106.05087</span><span class="p">,</span> <span class="mf">22.020059880982801</span><span class="p">,</span>
+     <span class="mf">77.03196</span><span class="p">,</span> <span class="mf">197.18234</span><span class="p">,</span> <span class="mf">109.112041110671519</span><span class="p">,</span>
+     <span class="mf">4105086.1713924406</span><span class="p">,</span> <span class="mf">36.892740690445894</span><span class="p">,</span> <span class="mf">3828869.3344387607</span><span class="p">,</span>
+     <span class="mf">0.80076349608092607</span><span class="p">,</span> <span class="mf">0.80101006984201008</span><span class="p">,</span> <span class="mf">61674961290615.615</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">21.97856</span><span class="p">,</span> <span class="mf">142.59065</span><span class="p">,</span> <span class="o">-</span><span class="mf">32.44456876433189</span><span class="p">,</span>
+     <span class="mf">41.84138</span><span class="p">,</span> <span class="mf">98.56635</span><span class="p">,</span> <span class="o">-</span><span class="mf">41.84359951440466</span><span class="p">,</span>
+     <span class="mf">8394328.894657671</span><span class="p">,</span> <span class="mf">75.62930491011522</span><span class="p">,</span> <span class="mf">6161154.5773110616</span><span class="p">,</span>
+     <span class="mf">0.24816339233950381</span><span class="p">,</span> <span class="mf">0.24930251203627892</span><span class="p">,</span> <span class="o">-</span><span class="mf">6637997720646.717</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">66.99028</span><span class="p">,</span> <span class="mf">112.2363</span><span class="p">,</span> <span class="mf">173.73491240878403</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">12.70631</span><span class="p">,</span> <span class="mf">285.90344</span><span class="p">,</span> <span class="mf">2.512956620913668</span><span class="p">,</span>
+     <span class="mf">11150344.2312080241</span><span class="p">,</span> <span class="mf">100.278634181155759</span><span class="p">,</span> <span class="mf">6289939.5670446687</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.17199490274700385</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.17722569526345708</span><span class="p">,</span> <span class="o">-</span><span class="mf">121287239862139.744</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">17.42761</span><span class="p">,</span> <span class="mf">173.34268</span><span class="p">,</span> <span class="o">-</span><span class="mf">159.033557661192928</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">15.84784</span><span class="p">,</span> <span class="mf">5.93557</span><span class="p">,</span> <span class="o">-</span><span class="mf">20.787484651536988</span><span class="p">,</span>
+     <span class="mf">16076603.1631180673</span><span class="p">,</span> <span class="mf">144.640108810286253</span><span class="p">,</span> <span class="mf">3732902.1583877189</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.81273638700070476</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.81299800519154474</span><span class="p">,</span> <span class="mf">97825992354058.708</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">32.84994</span><span class="p">,</span> <span class="mf">48.28919</span><span class="p">,</span> <span class="mf">150.492927788121982</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">56.28556</span><span class="p">,</span> <span class="mf">202.29132</span><span class="p">,</span> <span class="mf">48.113449399816759</span><span class="p">,</span>
+     <span class="mf">16727068.9438164461</span><span class="p">,</span> <span class="mf">150.565799985466607</span><span class="p">,</span> <span class="mf">3147838.1910180939</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.87334918086923126</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.86505036767110637</span><span class="p">,</span> <span class="o">-</span><span class="mf">72445258525585.010</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">6.96833</span><span class="p">,</span> <span class="mf">52.74123</span><span class="p">,</span> <span class="mf">92.581585386317712</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">7.39675</span><span class="p">,</span> <span class="mf">206.17291</span><span class="p">,</span> <span class="mf">90.721692165923907</span><span class="p">,</span>
+     <span class="mf">17102477.2496958388</span><span class="p">,</span> <span class="mf">154.147366239113561</span><span class="p">,</span> <span class="mf">2772035.6169917581</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.89991282520302447</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.89986892177110739</span><span class="p">,</span> <span class="o">-</span><span class="mf">1311796973197.995</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">50.56724</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.30485</span><span class="p">,</span> <span class="o">-</span><span class="mf">105.439679907590164</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">33.56571</span><span class="p">,</span> <span class="o">-</span><span class="mf">94.97412</span><span class="p">,</span> <span class="o">-</span><span class="mf">47.348547835650331</span><span class="p">,</span>
+     <span class="mf">6455670.5118668696</span><span class="p">,</span> <span class="mf">58.083719495371259</span><span class="p">,</span> <span class="mf">5409150.7979815838</span><span class="p">,</span>
+     <span class="mf">0.53053508035997263</span><span class="p">,</span> <span class="mf">0.52988722644436602</span><span class="p">,</span> <span class="mf">41071447902810.047</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">58.93002</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.90775</span><span class="p">,</span> <span class="mf">140.965397902500679</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">8.91104</span><span class="p">,</span> <span class="mf">133.13503</span><span class="p">,</span> <span class="mf">19.255429433416599</span><span class="p">,</span>
+     <span class="mf">11756066.0219864627</span><span class="p">,</span> <span class="mf">105.755691241406877</span><span class="p">,</span> <span class="mf">6151101.2270708536</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.26548622269867183</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.27068483874510741</span><span class="p">,</span> <span class="o">-</span><span class="mf">86143460552774.735</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">68.82867</span><span class="p">,</span> <span class="o">-</span><span class="mf">74.28391</span><span class="p">,</span> <span class="mf">93.774347763114881</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">50.63005</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.36685</span><span class="p">,</span> <span class="mf">34.65564085411343</span><span class="p">,</span>
+     <span class="mf">3956936.926063544</span><span class="p">,</span> <span class="mf">35.572254987389284</span><span class="p">,</span> <span class="mf">3708890.9544062657</span><span class="p">,</span>
+     <span class="mf">0.81443963736383502</span><span class="p">,</span> <span class="mf">0.81420859815358342</span><span class="p">,</span> <span class="o">-</span><span class="mf">41845309450093.787</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">10.62672</span><span class="p">,</span> <span class="o">-</span><span class="mf">32.0898</span><span class="p">,</span> <span class="o">-</span><span class="mf">86.426713286747751</span><span class="p">,</span>
+     <span class="mf">5.883</span><span class="p">,</span> <span class="o">-</span><span class="mf">134.31681</span><span class="p">,</span> <span class="o">-</span><span class="mf">80.473780971034875</span><span class="p">,</span>
+     <span class="mf">11470869.3864563009</span><span class="p">,</span> <span class="mf">103.387395634504061</span><span class="p">,</span> <span class="mf">6184411.6622659713</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.23138683500430237</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.23155097622286792</span><span class="p">,</span> <span class="mf">4198803992123.548</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">21.76221</span><span class="p">,</span> <span class="mf">166.90563</span><span class="p">,</span> <span class="mf">29.319421206936428</span><span class="p">,</span>
+     <span class="mf">48.72884</span><span class="p">,</span> <span class="mf">213.97627</span><span class="p">,</span> <span class="mf">43.508671946410168</span><span class="p">,</span>
+     <span class="mf">9098627.3986554915</span><span class="p">,</span> <span class="mf">81.963476716121964</span><span class="p">,</span> <span class="mf">6299240.9166992283</span><span class="p">,</span>
+     <span class="mf">0.13965943368590333</span><span class="p">,</span> <span class="mf">0.14152969707656796</span><span class="p">,</span> <span class="mf">10024709850277.476</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">19.79938</span><span class="p">,</span> <span class="o">-</span><span class="mf">174.47484</span><span class="p">,</span> <span class="mf">71.167275780171533</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">11.99349</span><span class="p">,</span> <span class="o">-</span><span class="mf">154.35109</span><span class="p">,</span> <span class="mf">65.589099775199228</span><span class="p">,</span>
+     <span class="mf">2319004.8601169389</span><span class="p">,</span> <span class="mf">20.896611684802389</span><span class="p">,</span> <span class="mf">2267960.8703918325</span><span class="p">,</span>
+     <span class="mf">0.93427001867125849</span><span class="p">,</span> <span class="mf">0.93424887135032789</span><span class="p">,</span> <span class="o">-</span><span class="mf">3935477535005.785</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">11.95887</span><span class="p">,</span> <span class="o">-</span><span class="mf">116.94513</span><span class="p">,</span> <span class="mf">92.712619830452549</span><span class="p">,</span>
+     <span class="mf">4.57352</span><span class="p">,</span> <span class="mf">7.16501</span><span class="p">,</span> <span class="mf">78.64960934409585</span><span class="p">,</span>
+     <span class="mf">13834722.5801401374</span><span class="p">,</span> <span class="mf">124.688684161089762</span><span class="p">,</span> <span class="mf">5228093.177931598</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.56879356755666463</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.56918731952397221</span><span class="p">,</span> <span class="o">-</span><span class="mf">9919582785894.853</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">87.85331</span><span class="p">,</span> <span class="mf">85.66836</span><span class="p">,</span> <span class="o">-</span><span class="mf">65.120313040242748</span><span class="p">,</span>
+     <span class="mf">66.48646</span><span class="p">,</span> <span class="mf">16.09921</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.888658719272296</span><span class="p">,</span>
+     <span class="mf">17286615.3147144645</span><span class="p">,</span> <span class="mf">155.58592449699137</span><span class="p">,</span> <span class="mf">2635887.4729110181</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.90697975771398578</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.91095608883042767</span><span class="p">,</span> <span class="mf">42667211366919.534</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">1.74708</span><span class="p">,</span> <span class="mf">128.32011</span><span class="p">,</span> <span class="o">-</span><span class="mf">101.584843631173858</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">11.16617</span><span class="p">,</span> <span class="mf">11.87109</span><span class="p">,</span> <span class="o">-</span><span class="mf">86.325793296437476</span><span class="p">,</span>
+     <span class="mf">12942901.1241347408</span><span class="p">,</span> <span class="mf">116.650512484301857</span><span class="p">,</span> <span class="mf">5682744.8413270572</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.44857868222697644</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.44824490340007729</span><span class="p">,</span> <span class="mf">10763055294345.653</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">25.72959</span><span class="p">,</span> <span class="o">-</span><span class="mf">144.90758</span><span class="p">,</span> <span class="o">-</span><span class="mf">153.647468693117198</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">57.70581</span><span class="p">,</span> <span class="o">-</span><span class="mf">269.17879</span><span class="p">,</span> <span class="o">-</span><span class="mf">48.343983158876487</span><span class="p">,</span>
+     <span class="mf">9413446.7452453107</span><span class="p">,</span> <span class="mf">84.664533838404295</span><span class="p">,</span> <span class="mf">6356176.6898881281</span><span class="p">,</span>
+     <span class="mf">0.09492245755254703</span><span class="p">,</span> <span class="mf">0.09737058264766572</span><span class="p">,</span> <span class="mf">74515122850712.444</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">41.22777</span><span class="p">,</span> <span class="mf">122.32875</span><span class="p">,</span> <span class="mf">14.285113402275739</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">7.57291</span><span class="p">,</span> <span class="mf">130.37946</span><span class="p">,</span> <span class="mf">10.805303085187369</span><span class="p">,</span>
+     <span class="mf">3812686.035106021</span><span class="p">,</span> <span class="mf">34.34330804743883</span><span class="p">,</span> <span class="mf">3588703.8812128856</span><span class="p">,</span>
+     <span class="mf">0.82605222593217889</span><span class="p">,</span> <span class="mf">0.82572158200920196</span><span class="p">,</span> <span class="o">-</span><span class="mf">2456961531057.857</span><span class="p">],</span>
+    <span class="p">[</span><span class="mf">11.01307</span><span class="p">,</span> <span class="mf">138.25278</span><span class="p">,</span> <span class="mf">79.43682622782374</span><span class="p">,</span>
+     <span class="mf">6.62726</span><span class="p">,</span> <span class="mf">247.05981</span><span class="p">,</span> <span class="mf">103.708090215522657</span><span class="p">,</span>
+     <span class="mf">11911190.819018408</span><span class="p">,</span> <span class="mf">107.341669954114577</span><span class="p">,</span> <span class="mf">6070904.722786735</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.29767608923657404</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.29785143390252321</span><span class="p">,</span> <span class="mf">17121631423099.696</span><span class="p">],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mf">29.47124</span><span class="p">,</span> <span class="mf">95.14681</span><span class="p">,</span> <span class="o">-</span><span class="mf">163.779130441688382</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">27.46601</span><span class="p">,</span> <span class="o">-</span><span class="mf">69.15955</span><span class="p">,</span> <span class="o">-</span><span class="mf">15.909335945554969</span><span class="p">,</span>
+     <span class="mf">13487015.8381145492</span><span class="p">,</span> <span class="mf">121.294026715742277</span><span class="p">,</span> <span class="mf">5481428.9945736388</span><span class="p">,</span>
+     <span class="o">-</span><span class="mf">0.51527225545373252</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.51556587964721788</span><span class="p">,</span> <span class="mf">104679964020340.318</span><span class="p">]]</span>
+
+
+<div class="viewcode-block" id="GeodesicTest"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodesicTest">[docs]</a><span class="k">class</span> <span class="nc">GeodesicTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GeodesicTest.test_inverse"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodesicTest.test_inverse">[docs]</a>    <span class="k">def</span> <span class="nf">test_inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">wgs84</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">TESTCASES</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">azi1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">azi2</span><span class="p">,</span> <span class="n">s12</span><span class="p">)</span> <span class="o">=</span> <span class="n">l</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+            <span class="n">point1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">point2</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">point1</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">point2</span><span class="p">,</span>
+                                                           <span class="n">long_unroll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                           <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">azi1</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">azi2</span><span class="p">,</span> <span class="n">az_b</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s12</span><span class="p">,</span> <span class="n">s_ab</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">8</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodesicTest.test_direct"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodesicTest.test_direct">[docs]</a>    <span class="k">def</span> <span class="nf">test_direct</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">frame</span><span class="o">=</span><span class="n">wgs84</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">TESTCASES</span><span class="p">:</span>
+            <span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">azi1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">,</span> <span class="n">azi2</span><span class="p">,</span> <span class="n">s12</span><span class="p">)</span> <span class="o">=</span> <span class="n">l</span><span class="p">[:</span><span class="mi">7</span><span class="p">]</span>
+            <span class="n">point1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span>
+            <span class="n">point2</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">point1</span><span class="o">.</span><span class="n">geo_point</span><span class="p">(</span><span class="n">s12</span><span class="p">,</span> <span class="n">azi1</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                            <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span> <span class="o">=</span> <span class="n">point2</span><span class="o">.</span><span class="n">latitude_deg</span><span class="p">,</span> <span class="n">point2</span><span class="o">.</span><span class="n">longitude_deg</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lat2</span><span class="p">,</span> <span class="n">lat_b</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lon2</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">azi2</span><span class="p">,</span> <span class="n">az_b</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">13</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="GeodSolveTest"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest">[docs]</a><span class="k">class</span> <span class="nc">GeodSolveTest</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve0"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve0">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve0</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">point1</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mf">40.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.8</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">wgs84</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">point2</span> <span class="o">=</span> <span class="n">GeoPoint</span><span class="p">(</span><span class="mf">49.01666667</span><span class="p">,</span> <span class="mf">2.55</span><span class="p">,</span> <span class="n">frame</span><span class="o">=</span><span class="n">wgs84</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">point1</span><span class="o">.</span><span class="n">distance_and_azimuth</span><span class="p">(</span><span class="n">point2</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">53.47022</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">111.59367</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">5853226</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve1"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve1">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">az1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">40.63972222</span><span class="p">,</span> <span class="o">-</span><span class="mf">73.77888889</span><span class="p">,</span> <span class="mf">53.5</span><span class="p">,))</span>
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">direct</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">az1</span><span class="p">,</span> <span class="mi">5850</span><span class="n">e3</span><span class="p">)</span>
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">((</span><span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lat_b</span><span class="p">,</span> <span class="mf">49.01467</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lon_b</span><span class="p">,</span> <span class="mf">2.56106</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">111.62947</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve2"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve2">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for antipodal prolate bug found 2010-09-04</span>
+        <span class="n">geod</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="mf">6.4e6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">150.0</span><span class="p">)</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">0.07476</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.07476</span><span class="p">,</span> <span class="mi">180</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">((</span><span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">90.00078</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">90.00078</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20106193</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">180</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">((</span><span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">90.00105</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">90.00105</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20106193</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve4"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve4">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve4</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for short line bug found 2010-05-21</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">36.493349428792</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="mf">36.49334942879201</span><span class="p">,</span> <span class="o">.</span><span class="mi">0000008</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">0.072</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve5"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve5">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve5</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for point2=pole bug found 2010-05-03</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">az1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">0.01777745589997</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">direct</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">az1</span><span class="p">,</span> <span class="mi">10</span><span class="n">e6</span><span class="p">)</span>
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">((</span><span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lat_b</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">lon_b</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lon_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">150</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">180</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lon_b</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve6"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve6">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve6</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for volatile sbet12a bug found 2011-06-25 (gcc 4.4.4</span>
+        <span class="c1"># x86 -O3).  Found again on 2012-03-27 with tdm-mingw32 (g++ 4.6.1).</span>
+
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">88.202499451857</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="o">-</span><span class="mf">88.202499451857</span><span class="p">,</span>
+                                             <span class="mf">179.981022032992859592</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">20003898.214</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span>
+
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">89.262080389218</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="o">-</span><span class="mf">89.262080389218</span><span class="p">,</span>
+                                             <span class="mf">179.992207982775375662</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">20003925.854</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span>
+
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">89.333123580033</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="o">-</span><span class="mf">89.333123580032997687</span><span class="p">,</span>
+                                             <span class="mf">179.99295812360148422</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">20003926.881</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve9"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve9">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve9</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for volatile x bug found 2011-06-25 (gcc 4.4.4 x86 -O3)</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">56.320923501171</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="o">-</span><span class="mf">56.320923501171</span><span class="p">,</span>
+                                             <span class="mf">179.664747671772880215</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">19993558.287</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve10"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve10">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve10</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for adjust tol1_ bug found 2011-06-25 (Visual Studio</span>
+        <span class="c1"># 10 rel + debug)</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">52.784459512564</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="o">-</span><span class="mf">52.784459512563990912</span><span class="p">,</span>
+                                             <span class="mf">179.634407464943777557</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">19991596.095</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve11"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve11">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve11</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for bet2 = -bet1 bug found 2011-06-25 (Visual Studio</span>
+        <span class="c1"># 10 rel + debug)</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mf">48.522876735459</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>
+                                             <span class="o">-</span><span class="mf">48.52287673545898293</span><span class="p">,</span>
+                                             <span class="mf">179.599720456223079643</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">19989144.774</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-3</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve12"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve12">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve12</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for inverse geodesics on extreme prolate/oblate</span>
+        <span class="c1"># ellipsoids Reported 2012-08-29 Stefan Guenther</span>
+        <span class="c1"># &lt;stefan.gunther@embl.de&gt;; fixed 2012-10-07</span>
+        <span class="n">geod</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="mf">89.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.83</span><span class="p">)</span>
+        <span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">160</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">lat1</span><span class="p">,</span> <span class="n">lon1</span><span class="p">,</span> <span class="n">lat2</span><span class="p">,</span> <span class="n">lon2</span><span class="p">)</span>
+        <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rad2deg</span><span class="p">((</span><span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">120.27</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">105.15</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mf">266.7</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="n">e</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve14"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve14">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve14</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for inverse ignoring lon12 = nan</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">az_a</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">s_ab</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve17"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve17">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve17</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for LONG_UNROLL bug found on 2015-05-07</span>
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">direct</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">75</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="n">e7</span><span class="p">,</span> <span class="n">long_unroll</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                          <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lat_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">39</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lon_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">254</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">170</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">lat_b</span><span class="p">,</span> <span class="n">lon_b</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">direct</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="o">-</span><span class="mi">75</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="n">e7</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lat_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">39</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">lon_b</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mi">170</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve29"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve29">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve29</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check longitude unrolling with inverse calculation 2015-09-16</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">539</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">181</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">222639</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">_az_a</span><span class="p">,</span> <span class="n">_az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">539</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">181</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">222639</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve33"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve33">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve33</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check max(-0.0,+0.0) issues 2015-08-22 (triggered by bugs in</span>
+        <span class="c1"># Octave -- sind(-0.0) = +0.0 -- and in some version of Visual</span>
+        <span class="c1"># Studio -- fmod(-0.0, 360.0) = +0.0.</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">19926189</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">179.5</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">55.96650</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">124.03350</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">19980862</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">0.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mf">180.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20003931</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">0.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mf">180.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">19893357</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+        <span class="n">geod</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="mf">6.4e6</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">19994492</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">0.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mf">180.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20106193</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">0.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mf">180.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">19994492</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">geod</span> <span class="o">=</span> <span class="n">FrameE</span><span class="p">(</span><span class="mf">6.4e6</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="o">/</span> <span class="mf">300.0</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">179</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">19994492</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">90.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20106193</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">33.02493</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="mf">146.97364</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20082617</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">geod</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_a</span><span class="p">,</span> <span class="mf">0.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">az_b</span><span class="p">,</span> <span class="o">-</span><span class="mf">180.00000</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5e-5</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertAlmostEqual</span><span class="p">(</span><span class="n">s_ab</span><span class="p">,</span> <span class="mi">20027270</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GeodSolveTest.test_GeodSolve55"><a class="viewcode-back" href="../../../api/nvector.tests.html#nvector.tests.test_geodesic.GeodSolveTest.test_GeodSolve55">[docs]</a>    <span class="k">def</span> <span class="nf">test_GeodSolve55</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Check fix for nan + point on equator or pole not returning all nans</span>
+        <span class="c1"># Geodesic::Inverse, found 2015-09-23.</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">az_a</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">s_ab</span><span class="p">))</span>
+        <span class="n">s_ab</span><span class="p">,</span> <span class="n">az_a</span><span class="p">,</span> <span class="n">az_b</span> <span class="o">=</span> <span class="n">wgs84</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="n">degrees</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">az_a</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">az_b</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assertTrue</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">s_ab</span><span class="p">))</span></div></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># import syssys.argv = [&#39;&#39;, &#39;Test.testName&#39;]</span>
+    <span class="n">unittest</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Norwegian Defence Research Establishment (FFI).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.4.1.post0.dev36+g00d4643.dirty',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

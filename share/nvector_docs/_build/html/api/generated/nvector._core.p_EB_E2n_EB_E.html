@@ -1,0 +1,306 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>nvector._core.p_EB_E2n_EB_E &mdash; nvector 0.4.1.post0.dev36+g00d4643.dirty documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="nvector 0.4.1.post0.dev36+g00d4643.dirty documentation" href="../../index.html"/>
+        <link rel="up" title="nvector package" href="../nvector.html"/>
+        <link rel="next" title="nvector._core.n_EA_E_and_n_EB_E2p_AB_E" href="nvector._core.n_EA_E_and_n_EB_E2p_AB_E.html"/>
+        <link rel="prev" title="nvector._core.n_EB_E2p_EB_E" href="nvector._core.n_EB_E2p_EB_E.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> nvector
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.1.post0.dev36+g00d4643.dirty
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html">Introduction to Nvector</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#description">Description</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#documentation-and-code">Documentation and code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#installation">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#unit-tests">Unit tests</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#acknowledgement">Acknowledgement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#getting-started">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/overview.html#see-also">See also</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../src/getting_started_functional.html">     Functional examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changes.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Module Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../nvector.html">nvector package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../nvector.html#geodesic-functions">Geodesic functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.lat_lon2n_E.html">nvector._core.lat_lon2n_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_E2lat_lon.html">nvector._core.n_E2lat_lon</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EB_E2p_EB_E.html">nvector._core.n_EB_E2p_EB_E</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nvector._core.p_EB_E2n_EB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_and_n_EB_E2p_AB_E.html">nvector._core.n_EA_E_and_n_EB_E2p_AB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_and_p_AB_E2n_EB_E.html">nvector._core.n_EA_E_and_p_AB_E2n_EB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_and_n_EB_E2azimuth.html">nvector._core.n_EA_E_and_n_EB_E2azimuth</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.n_EA_E_distance_and_azimuth2n_EB_E.html">nvector._core.n_EA_E_distance_and_azimuth2n_EB_E</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.great_circle_distance.html">nvector._core.great_circle_distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.euclidean_distance.html">nvector._core.euclidean_distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.cross_track_distance.html">nvector._core.cross_track_distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.closest_point_on_great_circle.html">nvector._core.closest_point_on_great_circle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.intersect.html">nvector._core.intersect</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.mean_horizontal_position.html">nvector._core.mean_horizontal_position</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.on_great_circle.html">nvector._core.on_great_circle</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nvector._core.on_great_circle_path.html">nvector._core.on_great_circle_path</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#rotation-matrices-and-angles">Rotation matrices and angles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#misc-functions">Misc functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../nvector.html#oo-interface-to-geodesic-functions">OO interface to Geodesic functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../../index.html">nvector</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+      
+          <li><a href="../nvector.html">nvector package</a> &raquo;</li>
+      
+    <li>nvector._core.p_EB_E2n_EB_E</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../../_sources/api/generated/nvector._core.p_EB_E2n_EB_E.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nvector-core-p-eb-e2n-eb-e">
+<h1>nvector._core.p_EB_E2n_EB_E<a class="headerlink" href="#nvector-core-p-eb-e2n-eb-e" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="nvector._core.p_EB_E2n_EB_E">
+<code class="descclassname">nvector._core.</code><code class="descname">p_EB_E2n_EB_E</code><span class="sig-paren">(</span><em>p_EB_E</em>, <em>a=6378137</em>, <em>f=0.0033528106647474805</em>, <em>R_Ee=None</em><span class="sig-paren">)</span><a class="reference external" href="http://github.com/pbrod/nvector/blob/master/nvector/_core.py#L599-L640"><span class="viewcode-link">[source]</span></a><a class="reference internal" href="../../_modules/nvector/_core.html#p_EB_E2n_EB_E"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nvector._core.p_EB_E2n_EB_E" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>Converts Cartesian position vector in meters to n-vector.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><p class="first"><strong>p_EB_E:  3 x n array</strong></p>
+<blockquote>
+<div><blockquote>
+<div><p>Cartesian position vector(s) from E to B, decomposed in E.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>a: real scalar, default WGS-84 ellipsoid.</dt>
+<dd><p class="first last">Semi-major axis of the Earth ellipsoid given in [m].</p>
+</dd>
+<dt>f: real scalar, default WGS-84 ellipsoid.</dt>
+<dd><p class="first last">Flattening [no unit] of the Earth ellipsoid. If f==0 then spherical
+Earth with radius a is used in stead of WGS-84.</p>
+</dd>
+<dt>R_Ee</dt>
+ <span class="classifier-delimiter">:</span> <span class="classifier">2d array</span><dd><p class="first last">rotation matrix defining the axes of the coordinate frame E.</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">n_EB_E:  3 x n array</p>
+<blockquote class="last">
+<div><blockquote>
+<div><p>n-vector(s) [no unit] of position B, decomposed in E.</p>
+</div></blockquote>
+<dl class="docutils">
+<dt>depth:  1 x n array</dt>
+<dd><p class="first last">Depth(s) [m] of system B, relative to the ellipsoid (depth = -height)</p>
+</dd>
+</dl>
+</div></blockquote>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The position of B (typically body) relative to E (typically Earth) is
+given into this function as cartesian position vector p_EB_E, in meters.
+(&#8220;ECEF-vector&#8221;). The function converts to n-vector, n_EB_E and its
+depth, depth.
+The calculation is excact, taking the ellipsity of the Earth into account.
+It is also non-singular as both n-vector and p-vector are non-singular
+(except for the center of the Earth).
+The default ellipsoid model used is WGS-84, but other ellipsoids/spheres
+might be specified.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="nvector._core.n_EA_E_and_n_EB_E2p_AB_E.html" class="btn btn-neutral float-right" title="nvector._core.n_EA_E_and_n_EB_E2p_AB_E" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="nvector._core.n_EB_E2p_EB_E.html" class="btn btn-neutral" title="nvector._core.n_EB_E2p_EB_E" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Norwegian Defence Research Establishment (FFI).
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.4.1.post0.dev36+g00d4643.dirty',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
